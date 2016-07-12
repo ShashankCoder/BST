@@ -186,6 +186,11 @@ treenode * deletenode(treenode * root, treenode * delnode , int number){
                 
         }
         
+        else if(delnode->right == NULL){
+            
+                return delnode->left;
+        }
+        
         else if(delnode->left ==  NULL){
             
                 return delnode->right;
@@ -240,7 +245,7 @@ int main(){
     newnode = (treenode*)malloc(sizeof(treenode));
     createnode(newnode, 18);
     insert(root, newnode, 18);
-    deletenode(root, root, 17);
+    deletenode(root, root, 18);
     display(nodepath, root);
     return 0;
     
