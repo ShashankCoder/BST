@@ -22,7 +22,8 @@ typedef struct queue{
     treenode * list [MAX];
     int front;
     int rear;
-    }queue;
+    
+}queue;
 
 queue * createqueue(){
     
@@ -77,12 +78,13 @@ void display(queue * nodepath, treenode * root){
         
         push(nodepath , root->right, nodepath->front);
         
-        
     }
     
     root = pop(nodepath , root, nodepath->rear);
     display(nodepath , root);
     return;
+    
+    }
     
 }
 
