@@ -157,70 +157,45 @@ int findnode(treenode * root, treenode * delnode){
 
 }
 
-void deletenode(treenode * root, treenode * delnode, int number){
+treenode * deletenode(treenode * root, treenode * delnode , int number){
     
     if(delnode->data > number){
         
         root = delnode;
-        deletenode(root, delnode->left, number);
+        delnode->left = deletenode(root, delnode->left, number);
+        return root;
         
     }
     
     else if(delnode->data < number){
         
         root = delnode;
-        deletenode(root, delnode->right, number);
+        delnode->right = deletenode(root, delnode->right, number);
+        return root;
         
     }
     
     else if(delnode->data == number){
         
+        treenode * temp;
+        temp = (treenode*)malloc(sizeof(treenode));
+        
         if(delnode->left == NULL && delnode->right == NULL){
             
-            if(root->data<number){
+                return NULL;
                 
-                root->right = NULL;
-            }
-            
-            else{
-                
-                root->left = NULL;
-                
-            }
-        }
-        
-        else if(delnode->right = NULL){
-            
-            if(root->data<number){
-                
-                root->right = delnode->left;
-                
-            }
-            
-            else{
-                
-                root->left = delnode->left;
-                
-            }
         }
         
         else if(delnode->left ==  NULL){
             
-            if(root->data<number){
-                
-                root->right = delnode->right;
-            }
+                return delnode->right;
             
-            else{
-                
-                root->left = delnode->right;
-            }
         }
         
         else{
             
-            number = findnode(delnode,delnode->left);
-            delnode->data = number;
+                number = findnode(delnode,delnode->left);
+                delnode->data = number;
             
         }
         
@@ -228,7 +203,7 @@ void deletenode(treenode * root, treenode * delnode, int number){
     
     else{
         
-        return;
+                return;
         
     }
 }
