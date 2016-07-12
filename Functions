@@ -1,4 +1,3 @@
-
 #include<stdio.h>
 #include<stdlib.h>
 #define MAX 20
@@ -42,13 +41,16 @@ void initializequeue(queue * nodepath){
     nodepath->rear = 0;
     
     for(i=0;i< MAX; i++){
-        
         nodepath->list[i] = NULL;
     }
+    
 }
+
 void push(queue * nodepath , treenode * root, int front){
+    
    nodepath->front = nodepath->front + 1;
    nodepath->list[front] =   root;
+   
 }
 
 treenode * pop(queue * nodepath , treenode * root, int rear){
@@ -56,6 +58,7 @@ treenode * pop(queue * nodepath , treenode * root, int rear){
     root = nodepath->list[rear];
     nodepath->rear = nodepath->rear + 1;
     return root;
+    
 }
 
 void display(queue * nodepath, treenode * root){
@@ -67,21 +70,21 @@ void display(queue * nodepath, treenode * root){
     if(root->left != NULL){
         
         push(nodepath , root->left, nodepath-> front);
+        
     }
     
     if(root->right != NULL){
         
         push(nodepath , root->right, nodepath->front);
         
+        
     }
     
     root = pop(nodepath , root, nodepath->rear);
     display(nodepath , root);
     return;
+    
 }
-
-
-
 
 BST * createtree(){
   
@@ -99,18 +102,15 @@ void initialize (BST * bt, treenode * root){
     bt->count = 1;
 }
 
-treenode * createnode(int number){
+treenode * createnode(treenode * newnode, int number){
         
-    treenode * newnode;
-    newnode = (treenode*)malloc(sizeof(treenode));
     newnode->data = number;
     newnode->right = NULL;
     newnode->left = NULL;
-    return newnode;
+  
 }
 
- 
-void insert(treenode * root, treenode * newnode, int number ){
+ void insert(treenode * root, treenode * newnode, int number ){
     
     if(root->data > number){
         if(root->left!= NULL){
@@ -221,14 +221,15 @@ void deletenode(treenode * root, treenode * delnode, int number){
             delnode->data = number;
             
         }
+        
     }
     
     else{
         
         return;
+        
     }
 }
-
 
 int main(){
     
@@ -236,24 +237,31 @@ int main(){
     treenode * root, * newnode;
     queue * nodepath;
     nodepath = createqueue();
-    bt = createtree();
-    root = bt->head;
-    root = createnode(16);
-    initialize(bt, root);
     initializequeue(nodepath);
-    newnode = createnode(10);
+    bt = createtree();
+    root = (treenode*)malloc(sizeof(treenode));
+    createnode(root, 16);
+    initialize(bt, root);
+    newnode = (treenode*)malloc(sizeof(treenode));
+    createnode(newnode, 10);
     insert(root, newnode, 10);
-    newnode = createnode(19);
+    newnode = (treenode*)malloc(sizeof(treenode));
+    createnode(newnode, 19);
     insert(root, newnode, 19);
-    newnode = createnode(20);
+    newnode = (treenode*)malloc(sizeof(treenode));
+    createnode(newnode, 20);
     insert(root, newnode, 20);
-    newnode = createnode(8);
+    newnode = (treenode*)malloc(sizeof(treenode));
+    createnode(newnode, 8);
     insert(root, newnode, 8);
-    newnode = createnode(12);
+    newnode = (treenode*)malloc(sizeof(treenode));
+    createnode(newnode, 12);
     insert(root, newnode, 12);
-    newnode = createnode(17);
+    newnode = (treenode*)malloc(sizeof(treenode));
+    createnode(newnode, 17);
     insert(root, newnode, 17);
-    newnode = createnode(18);
+    newnode = (treenode*)malloc(sizeof(treenode));
+    createnode(newnode, 18);
     insert(root, newnode, 18);
     deletenode(root, root, 17);
     display(nodepath, root);
