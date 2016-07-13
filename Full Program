@@ -139,20 +139,12 @@ int findnode(treenode * root, treenode * delnode){
         
     while(delnode->right != NULL){
             
+            root = delnode;
             delnode = delnode->right;
             
     }
     
-    if(delnode->data < root->data){
-        
-        root->left = NULL;
-    }
-    
-    else{
-        
-        root->right = NULL;
-    }
-    
+    root->right = NULL;
     return delnode->data;
 
 }
@@ -201,6 +193,7 @@ treenode * deletenode(treenode * root, treenode * delnode , int number){
             
                 number = findnode(delnode,delnode->left);
                 delnode->data = number;
+                return delnode;
             
         }
         
@@ -222,11 +215,20 @@ int main(){
     initializequeue(nodepath);
     bt = createtree();
     root = (treenode*)malloc(sizeof(treenode));
-    createnode(root, 16);
+    createnode(root, 18);
     initialize(bt, root);
+    newnode = (treenode*)malloc(sizeof(treenode));
+    createnode(newnode, 23);
+    insert(root, newnode, 23);
     newnode = (treenode*)malloc(sizeof(treenode));
     createnode(newnode, 10);
     insert(root, newnode, 10);
+    newnode = (treenode*)malloc(sizeof(treenode));
+    createnode(newnode, 12);
+    insert(root, newnode, 12);
+    newnode = (treenode*)malloc(sizeof(treenode));
+    createnode(newnode, 8);
+    insert(root, newnode, 8);
     newnode = (treenode*)malloc(sizeof(treenode));
     createnode(newnode, 19);
     insert(root, newnode, 19);
@@ -234,18 +236,12 @@ int main(){
     createnode(newnode, 20);
     insert(root, newnode, 20);
     newnode = (treenode*)malloc(sizeof(treenode));
-    createnode(newnode, 8);
-    insert(root, newnode, 8);
+    createnode(newnode, 21);
+    insert(root, newnode, 21);
     newnode = (treenode*)malloc(sizeof(treenode));
-    createnode(newnode, 12);
-    insert(root, newnode, 12);
-    newnode = (treenode*)malloc(sizeof(treenode));
-    createnode(newnode, 17);
-    insert(root, newnode, 17);
-    newnode = (treenode*)malloc(sizeof(treenode));
-    createnode(newnode, 18);
-    insert(root, newnode, 18);
-    deletenode(root, root, 18);
+    createnode(newnode, 25);
+    insert(root, newnode, 25);
+    deletenode(root, root, 23);
     display(nodepath, root);
     return 0;
     
