@@ -62,27 +62,33 @@ treenode * pop(queue * nodepath , treenode * root, int rear){
     
 }
 
-void display(queue * nodepath, treenode * root){
+void display(BST * bt, queue * nodepath, treenode * root){
+    
+    if(bt->head == NULL){
+        
+        printf("Tree empty\n");
+        return;
+        
+    }
     
     while(root != NULL){
-        
-    printf("%d\n", root->data);
+        printf("%d\n", root->data);
     
-    if(root->left != NULL){
+        if(root->left != NULL){
         
-        push(nodepath , root->left, nodepath-> front);
+            push(nodepath , root->left, nodepath-> front);
         
-    }
+        }
     
-    if(root->right != NULL){
+        if(root->right != NULL){
         
-        push(nodepath , root->right, nodepath->front);
+            push(nodepath , root->right, nodepath->front);
         
-    }
+        }
     
-    root = pop(nodepath , root, nodepath->rear);
-    display(nodepath , root);
-    return;
+        root = pop(nodepath , root, nodepath->rear);
+        display(bt, nodepath , root);
+        return;
     
     }
     
@@ -102,6 +108,16 @@ void initialize (BST * bt, treenode * root){
     
     bt->head = root;
     bt->count = 1;
+    
+}
+
+void deletetree (BST * bt, treenode * root){
+    
+    bt->head = NULL;
+    bt->count = 0;
+    root->left = NULL;
+    root->right = NULL;
+    
 }
 
 treenode * createnode(treenode * newnode, int number){
@@ -112,7 +128,7 @@ treenode * createnode(treenode * newnode, int number){
   
 }
 
- void insert(treenode * root, treenode * newnode, int number ){
+void insert(treenode * root, treenode * newnode, int number ){
     
     if(root->data > number){
         if(root->left!= NULL){
@@ -133,6 +149,7 @@ treenode * createnode(treenode * newnode, int number){
           root->right = newnode;
         }
     }
+    
 }
 
 int findnode(treenode * root, treenode * delnode){
@@ -175,7 +192,6 @@ treenode * deletenode(treenode * root, treenode * delnode , int number){
         if(delnode->left == NULL && delnode->right == NULL){
             
                 return NULL;
-                
         }
         
         else if(delnode->right == NULL){
@@ -186,7 +202,6 @@ treenode * deletenode(treenode * root, treenode * delnode , int number){
         else if(delnode->left ==  NULL){
             
                 return delnode->right;
-            
         }
         
         else{
@@ -242,7 +257,8 @@ int main(){
     createnode(newnode, 25);
     insert(root, newnode, 25);
     deletenode(root, root, 23);
-    display(nodepath, root);
+    deletetree (bt, root);
+    display(bt, nodepath, root);
     return 0;
     
 }
