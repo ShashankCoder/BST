@@ -138,9 +138,11 @@ void insert(treenode * root, treenode * newnode, int number ){
         else{
           root->left = newnode;
         }
+        
     }
   
     else{
+        
         if(root->right!=NULL){
           insert(root->right, newnode, number);
         }
@@ -148,6 +150,7 @@ void insert(treenode * root, treenode * newnode, int number ){
         else{
           root->right = newnode;
         }
+        
     }
     
 }
@@ -190,26 +193,21 @@ treenode * deletenode(treenode * root, treenode * delnode , int number){
         temp = (treenode*)malloc(sizeof(treenode));
         
         if(delnode->left == NULL && delnode->right == NULL){
-            
                 return NULL;
         }
         
         else if(delnode->right == NULL){
-            
                 return delnode->left;
         }
         
         else if(delnode->left ==  NULL){
-            
                 return delnode->right;
         }
         
         else{
-            
                 number = findnode(delnode,delnode->left);
                 delnode->data = number;
                 return delnode;
-            
         }
         
     }
@@ -219,6 +217,35 @@ treenode * deletenode(treenode * root, treenode * delnode , int number){
                 return;
         
     }
+    
+}
+
+int search (treenode * root, int number){
+    
+    if(root == NULL){
+        
+        printf("Number not found\n");
+        
+    }
+    
+    else if (root->data > number){
+        
+        search(root->left, number);
+        
+    }
+    
+    else if (root->data < number){
+        
+        search(root->right, number);
+        
+    }
+    
+     else{
+        
+        printf("Number found\n");
+        
+    }
+    
 }
 
 int main(){
@@ -257,6 +284,7 @@ int main(){
     createnode(newnode, 25);
     insert(root, newnode, 25);
     deletenode(root, root, 23);
+    search(root, 8);
     deletetree (bt, root);
     display(bt, nodepath, root);
     return 0;
