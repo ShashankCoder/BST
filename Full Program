@@ -248,6 +248,21 @@ int search (treenode * root, int number){
     
 }
 
+void DepthFirstSearch(treenode * root){
+    
+    if(root != NULL){
+        
+        DepthFirstSearch(root->left);
+        printf("%d\n",root->data);
+        DepthFirstSearch(root->right);
+        return;
+        
+    }
+    
+    return;
+    
+}
+
 int main(){
     
     BST * bt;
@@ -285,6 +300,7 @@ int main(){
     insert(root, newnode, 25);
     deletenode(root, root, 23);
     search(root, 8);
+    DepthFirstSearch(root);
     deletetree (bt, root);
     display(bt, nodepath, root);
     return 0;
