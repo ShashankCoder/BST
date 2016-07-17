@@ -148,6 +148,62 @@ int computeheight (treenode * root){
     return 0;
 }
 
+void rotateright(treenode * prev, treenode * root, treenode * subroot){
+    
+    treenode * temp;
+    temp = (treenode*)malloc(sizeof(treenode));
+    temp = root->left;
+    root->left = temp->right;
+    temp->right = prev;
+    
+    if(prev == NULL){
+        return;
+    }
+    
+    else if(root->data > prev->data){
+        prev->right = temp;
+        return;
+    }
+    
+    else if(root->data < prev->data){
+        prev->left = temp;
+        return;
+    }
+    
+    else{
+        return;
+    }
+
+}
+
+void rotateleft(treenode * prev, treenode * root, treenode * subroot){
+    
+    treenode * temp;
+    temp = (treenode*)malloc(sizeof(treenode));
+    temp = root->right;
+    root->right = temp->left;
+    temp->left = root;
+    
+    if(prev == NULL){
+        return;
+    }
+    
+    else if(root->data < prev->data){
+        prev->left = temp;
+        return;
+    }
+    
+    else if(root->data > prev->data){
+        prev->right = temp;
+        return;
+    }
+    
+    else{
+        return;
+    }
+
+}
+
 void balance (treenode * prev, treenode * root, treenode * subroot){
     
     if(root->height == 2){
@@ -174,7 +230,7 @@ void balance (treenode * prev, treenode * root, treenode * subroot){
     
     else{
         
-        return;
+         return;
     }
     
 }
@@ -214,7 +270,6 @@ void insert(treenode * prev, treenode * root, treenode * newnode){
             return;
         }
     
-        
     }
     
     else{
@@ -368,9 +423,6 @@ int main(){
     newnode = (treenode*)malloc(sizeof(treenode));
     createnode(newnode, 25);
     insert(prev, root, newnode);
-    deletenode(root, root, 23);
-    search(root, 8);
-    deletetree (bt, root);
     display(bt, nodepath, root);
     return 0;
     
