@@ -135,8 +135,8 @@ int computeheight (treenode * root){
     int lh = 0, rh = 0;
     
     if(root != NULL){
-        lh = computeheight(root->left);
-        rh = computeheight(root->right);
+        lh = root->left->height;
+        rh = root->right->height;
         return rh-lh;
     }    
     
@@ -199,11 +199,11 @@ void rotateleft(treenode * prev, treenode * root, treenode * subroot){
 
 }
 
-void balance (treenode * prev, treenode * root, treenode * subroot){
+int balance (treenode * prev, treenode * root, treenode * subroot){
     
     if(root->height == 2){
         
-        if(subroot->height == 1 || root->height == 0){
+        if(subroot->height == 1 || subroot->height == 0)
             rotateleft(prev, root, subroot);
             
         else 
@@ -214,7 +214,7 @@ void balance (treenode * prev, treenode * root, treenode * subroot){
     
     else if(root->height == -2){
         
-        if(subroot->height == -1 || root->height == 0)
+        if(subroot->height == -1 || subroot->height == 0)
             rotateright(prev, root, subroot);
             
         else
@@ -225,12 +225,12 @@ void balance (treenode * prev, treenode * root, treenode * subroot){
     
     else{
         
-         return;
+         return root->height;
     }
     
 }
 
-void insert(treenode * prev, treenode * root, treenode * newnode, int number){
+int insert(treenode * prev, treenode * root, treenode * newnode, int number){
     
     if(root->data > number){
         
@@ -238,7 +238,8 @@ void insert(treenode * prev, treenode * root, treenode * newnode, int number){
             prev = root;
             root = insert(prev, root->left, newnode);
             root->height = computeheight(root);
-            balance(prev, root, root->left);
+            treebalance = balance(prev, root, root->left);
+            return treebalance;
         }
         
         else{
@@ -255,7 +256,8 @@ void insert(treenode * prev, treenode * root, treenode * newnode, int number){
             prev = root;
             root = insert(prev, root->right, newnode);
             root->height = computeheight(root);
-            balance(prev, root, root->right);
+            treebalance = balance(prev, root, root->right);
+            return treebalance;
         }
         
         else{
@@ -395,28 +397,28 @@ int main(){
     initialize(bt, root);
     newnode = (treenode*)malloc(sizeof(treenode));
     createnode(newnode, 23);
-    prev = insert(prev, root, newnode, 23);
+    root->height = insert(prev, root, newnode, 23);
     newnode = (treenode*)malloc(sizeof(treenode));
     createnode(newnode, 10);
-    prev = insert(prev, root, newnode, 10);
+    root->height = insert(prev, root, newnode, 10);
     newnode = (treenode*)malloc(sizeof(treenode));
     createnode(newnode, 12);
-    prev = insert(prev, root, newnode, 12);
+    root->height = insert(prev, root, newnode, 12);
     newnode = (treenode*)malloc(sizeof(treenode));
     createnode(newnode, 8);
-    prev = insert(prev, root, newnode, 8);
+    root->height = insert(prev, root, newnode, 8);
     newnode = (treenode*)malloc(sizeof(treenode));
     createnode(newnode, 19);
-    prev = insert(prev, root, newnode, 19);
+    root->height = insert(prev, root, newnode, 19);
     newnode = (treenode*)malloc(sizeof(treenode));
     createnode(newnode, 20);
-    prev = insert(prev, root, newnode, 20);
+    root->height = insert(prev, root, newnode, 20);
     newnode = (treenode*)malloc(sizeof(treenode));
     createnode(newnode, 21);
-    prev = insert(prev, root, newnode, 21);
+    root->height = insert(prev, root, newnode, 21);
     newnode = (treenode*)malloc(sizeof(treenode));
     createnode(newnode, 25);
-    prev = insert(prev, root, newnode, 25);
+    root->height = insert(prev, root, newnode, 25);
     display(bt, nodepath, root);
     return 0;
     
