@@ -199,35 +199,39 @@ void rotateleft(treenode * prev, treenode * root, treenode * subroot){
 
 }
 
-void balance (treenode * prev, treenode * root, treenode * subroot){
+void balance(treenode * prev, treenode * root, treenode * subroot){
     
     if(root->height == 2){
         
-        if(subroot->height == 1 || subroot->height == 0)
+        if(subroot->height == 1 || subroot->height == 0){
             rotateleft(prev, root, subroot);
             return;
-            
-        else 
+        }
+        
+        else{ 
             rotateright(prev, root, subroot);
             balance(prev, root, subroot);
-            
+        }
+        
     }
     
     else if(root->height == -2){
         
-        if(subroot->height == -1 || subroot->height == 0)
+        if(subroot->height == -1 || subroot->height == 0){
             rotateright(prev, root, subroot);
             return;
-            
-        else
+        }
+        
+        else{
             rotateleft(prev, root, subroot);
             balance(prev, root, subroot);
-            
+        }
+        
     }
     
     else{
         
-         return;
+        return;
     }
     
 }
