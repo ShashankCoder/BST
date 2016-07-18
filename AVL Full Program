@@ -199,12 +199,13 @@ void rotateleft(treenode * prev, treenode * root, treenode * subroot){
 
 }
 
-int balance (treenode * prev, treenode * root, treenode * subroot){
+void balance (treenode * prev, treenode * root, treenode * subroot){
     
     if(root->height == 2){
         
         if(subroot->height == 1 || subroot->height == 0)
             rotateleft(prev, root, subroot);
+            return;
             
         else 
             rotateright(prev, root, subroot);
@@ -225,7 +226,7 @@ int balance (treenode * prev, treenode * root, treenode * subroot){
     
     else{
         
-         return root->height;
+         return;
     }
     
 }
@@ -243,6 +244,7 @@ void insert(treenode * prev, treenode * root, treenode * newnode, int number){
         else{
             root->height = root->height + 1;
             root->left = newnode;
+            return;
         }
         
     }
@@ -250,7 +252,7 @@ void insert(treenode * prev, treenode * root, treenode * newnode, int number){
     else{
         
         if(root->right != NULL){ 
-            insert(prev, root->right, newnode);
+            insert(prev, root->right, newnode, number);
             root->height = computeheight(root);
             balance(prev, root, root->right);
         }
@@ -258,6 +260,7 @@ void insert(treenode * prev, treenode * root, treenode * newnode, int number){
         else{
             root->height = prev->height - 1;  
             root->right = newnode;
+            return;
         }
     
     }
@@ -389,25 +392,25 @@ int main(){
     insert(prev, root, newnode, 23);
     newnode = (treenode*)malloc(sizeof(treenode));
     createnode(newnode, 10);
-    root->height = insert(prev, root, newnode, 10);
+    insert(prev, root, newnode, 10);
     newnode = (treenode*)malloc(sizeof(treenode));
     createnode(newnode, 12);
-    root->height = insert(prev, root, newnode, 12);
+    insert(prev, root, newnode, 12);
     newnode = (treenode*)malloc(sizeof(treenode));
     createnode(newnode, 8);
-    root->height = insert(prev, root, newnode, 8);
+    insert(prev, root, newnode, 8);
     newnode = (treenode*)malloc(sizeof(treenode));
     createnode(newnode, 19);
-    root->height = insert(prev, root, newnode, 19);
+    insert(prev, root, newnode, 19);
     newnode = (treenode*)malloc(sizeof(treenode));
     createnode(newnode, 20);
-    root->height = insert(prev, root, newnode, 20);
+    insert(prev, root, newnode, 20);
     newnode = (treenode*)malloc(sizeof(treenode));
     createnode(newnode, 21);
-    root->height = insert(prev, root, newnode, 21);
+    insert(prev, root, newnode, 21);
     newnode = (treenode*)malloc(sizeof(treenode));
     createnode(newnode, 25);
-    root->height = insert(prev, root, newnode, 25);
+    insert(prev, root, newnode, 25);
     display(bt, nodepath, root);
     return 0;
     
