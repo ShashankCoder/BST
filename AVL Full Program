@@ -230,47 +230,36 @@ int balance (treenode * prev, treenode * root, treenode * subroot){
     
 }
 
-int insert(treenode * prev, treenode * root, treenode * newnode, int number){
+void insert(treenode * prev, treenode * root, treenode * newnode, int number){
     
     if(root->data > number){
         
         if(root->left != NULL){
-            prev = root;
-            root = insert(prev, root->left, newnode);
+            insert(root, root->left, newnode, number);
             root->height = computeheight(root);
-            treebalance = balance(prev, root, root->left);
-            return treebalance;
+            balance(prev, root, root->left);
         }
         
         else{
-            root->height = prev->height + 1;
+            root->height = root->height + 1;
             root->left = newnode;
-            return prev;
         }
         
     }
         
-    else if(root->data < number){
+    else{
         
         if(root->right != NULL){ 
-            prev = root;
-            root = insert(prev, root->right, newnode);
+            insert(prev, root->right, newnode);
             root->height = computeheight(root);
-            treebalance = balance(prev, root, root->right);
-            return treebalance;
+            balance(prev, root, root->right);
         }
         
         else{
             root->height = prev->height - 1;  
             root->right = newnode;
-            return prev;
         }
     
-    }
-    
-    else{
-        
-        return;
     }
     
 }
@@ -397,7 +386,7 @@ int main(){
     initialize(bt, root);
     newnode = (treenode*)malloc(sizeof(treenode));
     createnode(newnode, 23);
-    root->height = insert(prev, root, newnode, 23);
+    insert(prev, root, newnode, 23);
     newnode = (treenode*)malloc(sizeof(treenode));
     createnode(newnode, 10);
     root->height = insert(prev, root, newnode, 10);
