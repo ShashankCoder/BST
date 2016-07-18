@@ -124,6 +124,7 @@ void deletetree (BST * bt, treenode * root){
 treenode * createnode(treenode * newnode, int number){
         
     newnode->data = number;
+    newnode->height = 0;
     newnode->right = NULL;
     newnode->left = NULL;
   
@@ -131,10 +132,9 @@ treenode * createnode(treenode * newnode, int number){
 
 int computeheight (treenode * root){
     
-    int lh, rh;
+    int lh = 0, rh = 0;
     
     if(root != NULL){
-        
         lh = computeheight(root->left);
         rh = computeheight(root->right);
         return rh-lh;
@@ -203,7 +203,7 @@ void balance (treenode * prev, treenode * root, treenode * subroot){
     
     if(root->height == 2){
         
-        if(subroot->height == 1 || root->height == 0)
+        if(subroot->height == 1 || root->height == 0){
             rotateleft(prev, root, subroot);
             
         else 
@@ -242,8 +242,8 @@ void insert(treenode * prev, treenode * root, treenode * newnode, int number){
         }
         
         else{
-            prev->height = prev->height - 1;
-            prev->right = newnode;
+            root->height = prev->height + 1;
+            root->left = newnode;
             return prev;
         }
         
@@ -259,8 +259,8 @@ void insert(treenode * prev, treenode * root, treenode * newnode, int number){
         }
         
         else{
-            prev->height = prev->height + 1;  
-            prev->left = newnode;
+            root->height = prev->height - 1;  
+            root->right = newnode;
             return prev;
         }
     
