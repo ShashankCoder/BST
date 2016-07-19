@@ -376,7 +376,8 @@ int main(){
     queue * nodepath;
     nodepath = (queue*)malloc(sizeof(queue));
     createqueue(nodepath);
-    bt = createtree();
+    bt = (BST*)malloc(sizeof(BST));
+    createtree(bt);
     prev = bt->head;
     root = (treenode*)malloc(sizeof(treenode));
     createnode(root, 18);
