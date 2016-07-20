@@ -244,13 +244,13 @@ void insert(treenode * prev, treenode * root, treenode * newnode, int number){
     else{
         
         if(root->right != NULL){ 
-            insert(prev, root->right, newnode, number);
+            insert(root, root->right, newnode, number);
             root->height = computeheight(root);
             balance(prev, root, root->right);
         }
         
         else{
-            root->height = prev->height - 1;  
+            root->height = root->height - 1;  
             root->right = newnode;
         }
     
@@ -383,8 +383,8 @@ int main(){
     createnode(newnode, 10);
     insert(prev, root, newnode, 10);
     newnode = (treenode*)malloc(sizeof(treenode));
-    createnode(newnode, 12);
-    insert(prev, root, newnode, 12);
+    createnode(newnode, 8);
+    insert(prev, root, newnode, 8);
     display(bt, nodepath, root);
     return 0;
     
