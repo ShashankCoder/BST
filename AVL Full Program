@@ -119,14 +119,17 @@ treenode * createnode(treenode * newnode, int number){
   
 }
 
-int computeheight (treenode * root){
+int computeheight (treenode * root, int count){
     
-    int lh = 0, rh = 0;
+    if(root != NULL){
     
-    lh = root->left->height;
-    rh = root->right->height;
-    return lh-rh;
+        int count = 0;
+        root->leftheight = computeheight(root->left, count+1);
+        root->rightheight = computeheight(root->right, count+1);
+        return ;
+    }
     
+    return 0;
 }    
 
 void rotateright(treenode * prev, treenode * root, treenode * subroot){
@@ -356,7 +359,7 @@ void DepthFirstSearch(treenode * root){
     if(root != NULL){
         
         DepthFirstSearch(root->left);
-        printf("%d\n",root->data);
+        printf("%d\n",root->height);
         DepthFirstSearch(root->right);
         return;
         
@@ -382,23 +385,7 @@ int main(){
     newnode = (treenode*)malloc(sizeof(treenode));
     createnode(newnode, 20);
     insert(prev, root, newnode, 20);
-    newnode = (treenode*)malloc(sizeof(treenode));
-    createnode(newnode, 10);
-    insert(prev, root, newnode, 10);
-    newnode = (treenode*)malloc(sizeof(treenode));
-    createnode(newnode, 15);
-    insert(prev, root, newnode, 15);
-    newnode = (treenode*)malloc(sizeof(treenode));
-    createnode(newnode, 8);
-    insert(prev, root, newnode, 8);
-    newnode = (treenode*)malloc(sizeof(treenode));
-    createnode(newnode, 25);
-    insert(prev, root, newnode, 25);
-    newnode = (treenode*)malloc(sizeof(treenode));
-    createnode(newnode, 19);
-    insert(prev, root, newnode, 19);
     DepthFirstSearch(root);
-
     return 0;
     
 }
