@@ -380,12 +380,25 @@ int main(){
     createnode(root, 18);
     initialize(bt, root);
     newnode = (treenode*)malloc(sizeof(treenode));
+    createnode(newnode, 20);
+    insert(prev, root, newnode, 20);
+    newnode = (treenode*)malloc(sizeof(treenode));
     createnode(newnode, 10);
     insert(prev, root, newnode, 10);
     newnode = (treenode*)malloc(sizeof(treenode));
+    createnode(newnode, 15);
+    insert(prev, root, newnode, 15);
+    newnode = (treenode*)malloc(sizeof(treenode));
     createnode(newnode, 8);
     insert(prev, root, newnode, 8);
-    display(bt, nodepath, root);
+    newnode = (treenode*)malloc(sizeof(treenode));
+    createnode(newnode, 25);
+    insert(prev, root, newnode, 25);
+    newnode = (treenode*)malloc(sizeof(treenode));
+    createnode(newnode, 19);
+    insert(prev, root, newnode, 19);
+    DepthFirstSearch(root);
+
     return 0;
     
 }
