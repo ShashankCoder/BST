@@ -128,29 +128,28 @@ int computeheight (treenode * root, int lh, int rh){
         return rh + 1;
     }
     
-    return lh;
+    else{
+    
+        return lh;
+    }
+    
 }    
 
-void rotateright(treenode * prev, treenode * root, treenode * subroot){
+void rotateleft(treenode * prev, treenode * root, treenode * subroot){
     
-    treenode * temp;
-    temp = (treenode*)malloc(sizeof(treenode));
-    temp = root->left;
-    root->left = temp->right;
-    temp->right = prev;
+    root->right = subroot->left;
+    subroot->left = root;
     
     if(prev == NULL){
         return;
     }
     
-    if(root->data > prev->data){
-        prev->right = temp;
-        return;
+    if(root->data < prev->data){
+        prev->left = subroot;
     }
     
-    else if(root->data < prev->data){
-        prev->left = temp;
-        return;
+    else if(root->data > prev->data){
+        prev->right = subroot;
     }
     
     else{
@@ -159,26 +158,21 @@ void rotateright(treenode * prev, treenode * root, treenode * subroot){
 
 }
 
-void rotateleft(treenode * prev, treenode * root, treenode * subroot){
+void rotateright(treenode * prev, treenode * root, treenode * subroot){
     
-    treenode * temp;
-    temp = (treenode*)malloc(sizeof(treenode));
-    temp = root->right;
-    root->right = temp->left;
-    temp->left = root;
+    root->left = subroot->right;
+    subroot->right = prev;
     
-    if(prev == NULL){
-        return;
+    if(prev ==  NULL){
+        return;    
     }
     
-    if(root->data < prev->data){
-        prev->left = temp;
-        return;
+    if(root->data > prev->data){
+        prev->right = subroot;
     }
     
-    else if(root->data > prev->data){
-        prev->right = temp;
-        return;
+    else if(root->data < prev->data){
+        prev->left = subroot;
     }
     
     else{
@@ -192,13 +186,12 @@ void balance(treenode * prev, treenode * root, treenode * subroot){
     if(root->height == 2){
         
         if(subroot->height == 1 || subroot->height == 0){
-            rotateleft(prev, root, subroot);
+            rotateright(prev, root, subroot);
         }
         
         else{ 
-            rotateright(prev, root, subroot);
+            rotateleft(prev, root, subroot);
             balance(prev, root, subroot);
-            return;
         }
         
     }
@@ -206,13 +199,12 @@ void balance(treenode * prev, treenode * root, treenode * subroot){
     else if(root->height == -2){
         
         if(subroot->height == -1 || subroot->height == 0){
-            rotateright(prev, root, subroot);
+            rotateleft(prev, root, subroot);
         }
         
         else{
-            rotateleft(prev, root, subroot);
+            rotateright(prev, root, subroot);
             balance(prev, root, subroot);
-            return;
         }
         
     }
@@ -236,7 +228,7 @@ void insert(treenode * prev, treenode * root, treenode * newnode, int number){
         
         else{
             root->left = newnode;
-            computeheight(root, 0, 0);
+            prev->height = computeheight(root, 0, 0);
 
         }
         
@@ -248,12 +240,13 @@ void insert(treenode * prev, treenode * root, treenode * newnode, int number){
             insert(root, root->right, newnode, number);
             computeheight(root, 0, 0);
             balance(prev, root, root->right);
+
         }
         
         else{
             root->right = newnode;
-            computeheight(newnode, 0, 0);  
-
+            prev->height = computeheight(root, 0, 0) * -1;
+            
         }
     
     }
