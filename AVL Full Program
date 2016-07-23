@@ -119,7 +119,7 @@ treenode * createnode(treenode * newnode, int number){
 }
 
 int computeheight (treenode * root, int count){
-    
+     
     if(root != NULL){
     
         int lh = 0, rh = 0;
@@ -253,7 +253,7 @@ void insert(treenode * prev, treenode * root, treenode * newnode, int number){
         
         else{
             root->right = newnode;
-            computeheight(newnode,0);  
+            computeheight(root,0);  
 
         }
     
@@ -359,7 +359,7 @@ void DepthFirstSearch(treenode * root){
     if(root != NULL){
         
         DepthFirstSearch(root->left);
-        printf("%d\n", root->height);
+        printf("%d\n", root->data);
         DepthFirstSearch(root->right);
         return;
         
@@ -388,6 +388,15 @@ int main(){
     newnode = (treenode*)malloc(sizeof(treenode));
     createnode(newnode, 22);
     insert(prev, root, newnode, 22);
+    newnode = (treenode*)malloc(sizeof(treenode));
+    createnode(newnode, 24);
+    insert(prev, root, newnode, 24);
+    newnode = (treenode*)malloc(sizeof(treenode));
+    createnode(newnode, 23);
+    insert(prev, root, newnode, 23);
+    newnode = (treenode*)malloc(sizeof(treenode));
+    createnode(newnode, 25);
+    insert(prev, root, newnode, 25);
     DepthFirstSearch(root);
     return 0;
     
