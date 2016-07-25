@@ -18,10 +18,13 @@ typedef struct BST{
   
 }BST;
 
-void createtree(BST * bt){
+BST * createtree(){
   
+    BST * bt;
+    bt = (BST*)malloc(sizeof(BST));
     bt->head = NULL;
     bt->count = 0;
+    return bt;
 
 }
 
@@ -41,12 +44,15 @@ void deletetree (BST * bt, treenode * root){
     
 }
 
-treenode * createnode(treenode * newnode, int number){
+treenode * createnode(int number){
         
+    treenode * newnode;
+    newnode = (treenode*)malloc(sizeof(treenode));
     newnode->data = number;
     newnode->height = 0;
     newnode->right = NULL;
     newnode->left = NULL;
+    return newnode;
   
 }
 
@@ -57,7 +63,7 @@ int computeheight (treenode * root, int lh, int rh){
         lh = computeheight(root->left, lh, rh);
         rh = computeheight(root->right, lh, rh);
         root->height = lh-rh;
-        return rh + 1;
+        return lh>rh ? lh+1 : rh + 1;
     }
     
     else{
@@ -117,12 +123,13 @@ treenode * rotateright(treenode * prev, treenode * root, treenode * subroot){
 
 }
 
-void balance(treenode * prev, treenode * root, treenode * subroot){
+treenode * balance(treenode * prev, treenode * root, treenode * subroot){
     
     if(root->height == 2){
         
         if(subroot->height == 1 || subroot->height == 0){
             root = rotateright(prev, root, subroot);
+            return root;
         }
         
         else{ 
@@ -136,10 +143,11 @@ void balance(treenode * prev, treenode * root, treenode * subroot){
         
         if(subroot->height == -1 || subroot->height == 0){
             root = rotateleft(prev, root, subroot);
+            return root;
         }
         
         else{
-            subroot = rotateright(root, subroot, subroot->left);
+            subroot = rotateright(prev, root, subroot);
             balance(prev, root, subroot);
         }
         
@@ -152,20 +160,21 @@ void balance(treenode * prev, treenode * root, treenode * subroot){
     
 }
 
-void insert(treenode * prev, treenode * root, treenode * newnode, int number){
+treenode * insert(treenode * prev, treenode * root, treenode * newnode, int number){
     
     if(root->data > number){
         
         if(root->left != NULL){
             insert(root, root->left, newnode, number);
             computeheight(root, 0, 0);
-            balance (prev, root, root->left);
+            root = balance (prev, root, root->left);
+            return root;
         }
         
         else{
             root->left = newnode;
             computeheight(root, 0, 0);
-
+            return root;
         }
         
     }
@@ -175,12 +184,14 @@ void insert(treenode * prev, treenode * root, treenode * newnode, int number){
         if(root->right != NULL){ 
             insert(root, root->right, newnode, number);
             computeheight(root, 0, 0);
-            balance(prev, root, root->right);
+            root = balance(prev, root, newnode);
+            return root;
         }
         
         else{
             root->right = newnode;
-            computeheight(root, 0, 0);
+            computeheight(root, 0, 0) * -1;
+            return root;
             
         }
     
@@ -194,7 +205,7 @@ void DepthFirstSearch(treenode * root){
     
     if(root != NULL){
         
-        printf("%d\n", root->height);
+        printf("%d\n", root->data);
         DepthFirstSearch(root->left);
         DepthFirstSearch(root->right);
         return;
@@ -208,20 +219,17 @@ void DepthFirstSearch(treenode * root){
 int main(){
     
     BST * bt;
-    treenode * root, * newnode, * prev, *newnode1;
+    treenode * root, * newnode, * prev, *subroot;
     bt = (BST*)malloc(sizeof(BST));
     createtree(bt);
     prev = bt->head;
-    root = (treenode*)malloc(sizeof(treenode));
-    createnode(root, 12);
+    root = createnode(16);
     initialize(bt, root);
-    newnode = (treenode*)malloc(sizeof(treenode));
-    createnode(newnode, 14);
-    insert(prev, root, newnode, 14);
-    newnode1 = (treenode*)malloc(sizeof(treenode));
-    createnode(newnode1, 13);
-    insert(prev, root, newnode1, 13);
-    DepthFirstSearch(newnode);
+    newnode = createnode(14);
+    subroot = insert(prev, root, newnode, 14);
+    newnode = createnode(12);
+    subroot = insert(prev, root, newnode, 12);
+    DepthFirstSearch(subroot);
     return 0;
     
 }
