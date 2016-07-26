@@ -26,9 +26,11 @@ typedef struct queue{
     
 }queue;
 
-queue * createqueue(queue * nodepath){
+queue * createqueue(){
 
     int i;
+    queue * nodepath;
+    nodepath = (queue*)malloc(sizeof(queue));
     
     for(i=0;i< MAX; i++){
         nodepath->list[i] = NULL;
@@ -36,6 +38,9 @@ queue * createqueue(queue * nodepath){
  
     nodepath->front = 0;
     nodepath->rear = 0;
+    
+    return nodepath;
+
     
 }
 
@@ -380,8 +385,10 @@ int main(){
     
     BST * bt;
     treenode * root, * newnode, * prev, *subroot;
+    queue * nodepath;
     bt = createtree();
     prev = bt->head;
+    nodepath = createqueue();
     root = createnode(21);
     initialize(bt, root);
     newnode = createnode(24);
@@ -389,6 +396,8 @@ int main(){
     newnode = createnode(22);
     subroot = insert(prev, root, newnode, 22);
     DepthFirstSearch(subroot);
+    printf("\n");
+    display(bt, nodepath, subroot);
     return 0;
     
 }
