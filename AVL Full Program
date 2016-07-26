@@ -86,10 +86,13 @@ void display(BST * bt, queue * nodepath, treenode * root){
     
 }
 
-void createtree(BST * bt){
+BST * createtree(){
   
+    BST * bt;
+    bt = (BST*)malloc(sizeof(BST));
     bt->head = NULL;
     bt->count = 0;
+    return bt;
 
 }
 
