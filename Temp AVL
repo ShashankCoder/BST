@@ -1,3 +1,222 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX 20
+
+typedef struct treenode{
+
+    int data;
+    int height;
+    struct treenode * left;
+    struct treenode * right;
+  
+}treenode;
+
+typedef struct BST{
+
+    treenode * head;
+    int count;
+  
+}BST;
+
+BST * createtree(){
+  
+    BST * bt;
+    bt = (BST*)malloc(sizeof(BST));
+    bt->head = NULL;
+    bt->count = 0;
+    return bt;
+
+}
+
+void initialize (BST * bt, treenode * root){
+    
+    bt->head = root;
+    bt->count = 1;
+    
+}
+
+void deletetree (BST * bt, treenode * root){
+    
+    bt->head = NULL;
+    bt->count = 0;
+    root->left = NULL;
+    root->right = NULL;
+    
+}
+
+treenode * createnode(int number){
+        
+    treenode * newnode;
+    newnode = (treenode*)malloc(sizeof(treenode));
+    newnode->data = number;
+    newnode->height = 0;
+    newnode->right = NULL;
+    newnode->left = NULL;
+    return newnode;
+  
+}
+
+int computeheight (treenode * root){
+    
+    if(root != NULL){
+    
+        int lh = 0, rh = 0;    
+        lh = computeheight(root->left);
+        rh = computeheight(root->right);
+        root->height = lh-rh;
+        return lh>rh ? lh+1 : rh + 1;
+    }
+    
+    else{
+    
+        return 0;
+    }
+    
+}    
+
+treenode * rotateleft(treenode * prev, treenode * root){
+    
+    treenode * subroot;
+    subroot = (treenode*)malloc(sizeof(treenode));
+    subroot = root->right;
+    
+    root->right = subroot->left;
+    subroot->left = root;
+    
+    if(prev == NULL){
+        return subroot;
+    }
+    
+    if(root->data < prev->data){
+        prev->left = subroot;
+    }
+    
+    else{
+        prev->right = subroot;
+    }
+    
+    return subroot;
+}
+
+treenode * rotateright(treenode * prev, treenode * root){
+    
+    treenode * subroot;
+    subroot = (treenode*)malloc(sizeof(treenode));
+    subroot = root->left;
+    
+    root->left = subroot->right;
+    subroot->right = root;
+    
+    if(prev ==  NULL){
+        return subroot;    
+    }
+    
+    if(root->data > prev->data){
+        prev->right = subroot;
+    }
+    
+    else{
+        prev->left = subroot;
+    }
+    
+    return subroot;
+}
+
+treenode * balance(treenode * prev, treenode * root, treenode * subroot){
+    
+    treenode * temp;
+    
+    if(root->height == 2){
+        
+        if(subroot->height == 1 || subroot->height == 0){
+            temp = rotateright(prev, root);
+        }
+        
+        else{ 
+            temp = rotateleft(root, subroot);
+            computeheight(temp);
+            rotateright(prev, root);
+        }
+        
+    }
+    
+    else if(root->height == -2){
+        
+        if(subroot->height == -1 || subroot->height == 0){
+            temp = rotateleft(prev, root);
+        }
+        
+        else{
+            temp = rotateright(root, subroot);
+            computeheight(temp);
+            rotateleft(prev, root);
+        }
+        
+    }
+    
+    else{
+        
+        return root;
+    }
+    
+    return temp;
+    
+}
+
+treenode * insert(treenode * prev, treenode * root, treenode * newnode, int number){
+    
+    treenode * temp;
+
+    if(root->data > number){
+        
+        if(root->left != NULL){
+            insert(root, root->left, newnode, number);
+            computeheight(root);
+            temp = balance (prev, root, root->left);
+        }
+        else{
+            root->left = newnode;
+            computeheight(root);
+        }
+        
+    }
+        
+    else{
+        
+        if(root->right != NULL){ 
+            insert(root, root->right, newnode, number);
+            computeheight(root);
+            temp = balance(prev, root, root->right);
+        }
+        
+        else{
+            root->right = newnode;
+            computeheight(root);
+        }
+    
+    }
+    
+    return temp;
+    
+}
+
+
+
+void DepthFirstSearch(treenode * root){
+    
+    if(root != NULL){
+        
+        printf("%d\n", root->data);
+        DepthFirstSearch(root->left);
+        DepthFirstSearch(root->right);
+        return;
+        
+    }
+    
+    return;
+    
+}
+
 int main(){
     
     BST * bt;
