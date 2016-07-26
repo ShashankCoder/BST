@@ -102,7 +102,7 @@ treenode * rotateright(treenode * prev, treenode * root){
     
     treenode * subroot;
     subroot = (treenode*)malloc(sizeof(treenode));
-    subroot = root->right;
+    subroot = root->left;
     
     root->left = subroot->right;
     subroot->right = root;
@@ -124,10 +124,12 @@ treenode * rotateright(treenode * prev, treenode * root){
 
 treenode * balance(treenode * prev, treenode * root, treenode * subroot){
     
+    treenode * temp;
+    
     if(root->height == 2){
         
         if(subroot->height == 1 || subroot->height == 0){
-            rotateright(prev, root);
+            temp = rotateright(prev, root);
         }
         
         else{ 
@@ -140,7 +142,7 @@ treenode * balance(treenode * prev, treenode * root, treenode * subroot){
     else if(root->height == -2){
         
         if(subroot->height == -1 || subroot->height == 0){
-            rotateleft(prev, root);
+            temp = rotateleft(prev, root);
         }
         
         else{
@@ -155,14 +157,14 @@ treenode * balance(treenode * prev, treenode * root, treenode * subroot){
         return root;
     }
     
-    return root;
+    return temp;
     
 }
 
 treenode * insert(treenode * prev, treenode * root, treenode * newnode, int number){
     
     treenode * temp;
-    
+
     if(root->data > number){
         
         if(root->left != NULL){
@@ -223,7 +225,9 @@ int main(){
     initialize(bt, root);
     newnode = createnode(14);
     subroot = insert(prev, root, newnode, 14);
-    DepthFirstSearch(root);
+    newnode = createnode(12);
+    subroot = insert(prev, root, newnode, 12);
+    DepthFirstSearch(subroot);
     return 0;
     
 }
