@@ -265,6 +265,71 @@ treenode * insert(treenode * prev, treenode * root, treenode * newnode, int numb
     
 }
 
+int findnode(treenode * root, treenode * delnode){
+        
+    while(delnode->right != NULL){
+            
+            root = delnode;
+            delnode = delnode->right;
+            
+    }
+    
+    root->right = NULL;
+    return delnode->data;
+
+}
+
+treenode * deletenode(treenode * root, treenode * delnode , int number){
+    
+    if(delnode->data > number){
+        
+        root = delnode;
+        delnode->left = deletenode(root, delnode->left, number);
+        return root;
+        
+    }
+    
+    else if(delnode->data < number){
+        
+        root = delnode;
+        delnode->right = deletenode(root, delnode->right, number);
+        return root;
+        
+    }
+    
+    else if(delnode->data == number){
+        
+        treenode * temp;
+        temp = (treenode*)malloc(sizeof(treenode));
+        
+        if(delnode->left == NULL && delnode->right == NULL){
+                return NULL;
+        }
+        
+        else if(delnode->right == NULL){
+                return delnode->left;
+        }
+        
+        else if(delnode->left ==  NULL){
+                return delnode->right;
+        }
+        
+        else{
+                number = findnode(delnode,delnode->left);
+                delnode->data = number;
+                return delnode;
+        }
+        
+    }
+    
+    else{
+        
+                return;
+        
+    }
+    
+}
+
 int search (treenode * root, int number){
     
     if(root == NULL){
