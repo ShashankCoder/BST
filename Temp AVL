@@ -78,7 +78,7 @@ treenode * rotateleft(treenode * prev, treenode * root){
     
     treenode * subroot;
     subroot = (treenode*)malloc(sizeof(treenode));
-    subroot = root->left;
+    subroot = root->right;
     
     root->right = subroot->left;
     subroot->left = root;
@@ -223,10 +223,10 @@ int main(){
     prev = bt->head;
     root = createnode(16);
     initialize(bt, root);
-    newnode = createnode(14);
-    subroot = insert(prev, root, newnode, 14);
-    newnode = createnode(12);
-    subroot = insert(prev, root, newnode, 12);
+    newnode = createnode(18);
+    subroot = insert(prev, root, newnode, 18);
+    newnode = createnode(19);
+    subroot = insert(prev, root, newnode, 19);
     DepthFirstSearch(subroot);
     return 0;
     
