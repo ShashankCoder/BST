@@ -275,6 +275,21 @@ treenode * insert(treenode * prev, treenode * root, treenode * newnode, int numb
 
 int findnode(treenode * root, treenode * delnode){
         
+    if(delnode->right == NULL){
+        
+       if (delnode->data < root->data){
+           
+           root->left = delnode;
+           return delnode->data;
+       }
+       
+       else{
+           
+           root->right = delnode;
+           return delnode->data;
+       }
+    }
+    
     while(delnode->right != NULL){
             
             root = delnode;
@@ -289,26 +304,29 @@ int findnode(treenode * root, treenode * delnode){
 
 treenode * deletenode(treenode * root, treenode * delnode , int number){
     
+    treenode * temp;
+    temp = (treenode*)malloc(sizeof(treenode));
+    
     if(delnode->data > number){
         
-        root = delnode;
-        delnode->left = deletenode(root, delnode->left, number);
-        return root;
+        delnode->left = deletenode(delnode, delnode->left, number);
+        computeheight(delnode);
+        temp = balance(root, delnode, delnode->left);
+        return temp;
         
     }
     
     else if(delnode->data < number){
         
-        root = delnode;
-        delnode->right = deletenode(root, delnode->right, number);
-        return root;
+        delnode->right = deletenode(delnode, delnode->right, number);
+        computeheight(delnode);
+        temp = balance(root, delnode, delnode->left);
+        computeheight(temp);
+        return temp;
         
     }
     
     else if(delnode->data == number){
-        
-        treenode * temp;
-        temp = (treenode*)malloc(sizeof(treenode));
         
         if(delnode->left == NULL && delnode->right == NULL){
                 return NULL;
@@ -389,15 +407,21 @@ int main(){
     bt = createtree();
     prev = bt->head;
     nodepath = createqueue();
-    root = createnode(21);
+    root = createnode(15);
     initialize(bt, root);
-    newnode = createnode(24);
-    subroot = insert(prev, root, newnode, 24);
-    newnode = createnode(22);
-    subroot = insert(prev, root, newnode, 22);
+    newnode = createnode(10);
+    subroot = insert(prev, root, newnode, 10);
+    newnode = createnode(18);
+    subroot = insert(prev, root, newnode, 18);
+    newnode = createnode(8);
+    subroot = insert(prev, root, newnode, 8);
+    newnode = createnode(12);
+    subroot = insert(prev, root, newnode, 12);
+    subroot = deletenode(NULL, root, 18);
     DepthFirstSearch(subroot);
     printf("\n");
-    display(bt, nodepath, subroot);
+    subroot = deletenode(NULL, root, 12);
+    DepthFirstSearch(subroot);
     return 0;
     
 }
