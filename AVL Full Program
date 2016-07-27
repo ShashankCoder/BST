@@ -279,13 +279,13 @@ int findnode(treenode * root, treenode * delnode){
         
        if (delnode->data < root->data){
            
-           root->left = delnode;
+           root->left = delnode->left;
            return delnode->data;
        }
        
        else{
            
-           root->right = delnode;
+           root->right = delnode->left;
            return delnode->data;
        }
     }
@@ -312,6 +312,7 @@ treenode * deletenode(treenode * root, treenode * delnode , int number){
         delnode->left = deletenode(delnode, delnode->left, number);
         computeheight(delnode);
         temp = balance(root, delnode, delnode->left);
+        computeheight(temp);
         return temp;
         
     }
@@ -417,10 +418,8 @@ int main(){
     subroot = insert(prev, root, newnode, 8);
     newnode = createnode(12);
     subroot = insert(prev, root, newnode, 12);
-    subroot = deletenode(NULL, root, 18);
-    DepthFirstSearch(subroot);
-    printf("\n");
-    subroot = deletenode(NULL, root, 12);
+    subroot = deletenode(prev, root, 18);
+    subroot = deletenode(prev, subroot, 12);
     DepthFirstSearch(subroot);
     return 0;
     
