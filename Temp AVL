@@ -72,7 +72,7 @@ int computeheight (treenode * root){
         return 0;
     }
     
-}    
+}      
 
 treenode * rotateleft(treenode * prev, treenode * root){
     
@@ -161,8 +161,8 @@ treenode * balance(treenode * prev, treenode * root, treenode * subroot){
     
     return temp;
     
-}
-
+}       
+  
 treenode * insert(treenode * prev, treenode * root, treenode * newnode, int number){
     
     treenode * temp;
@@ -200,7 +200,89 @@ treenode * insert(treenode * prev, treenode * root, treenode * newnode, int numb
     
 }
 
+int findnode(treenode * root, treenode * delnode){
+        
+    if(delnode->right == NULL){
+        
+       if (delnode->data < root->data){
+           
+           root->left = delnode;
+           return delnode->data;
+       }
+       
+       else{
+           
+           root->right = delnode;
+           return delnode->data;
+       }
+    }
+    
+    while(delnode->right != NULL){
+            
+            root = delnode;
+            delnode = delnode->right;
+            
+    }
+    
+    root->right = NULL;
+    return delnode->data;
 
+}
+
+treenode * deletenode(treenode * root, treenode * delnode , int number){
+    
+    treenode * temp;
+    temp = (treenode*)malloc(sizeof(treenode));
+    
+    if(delnode->data > number){
+        
+        delnode->left = deletenode(delnode, delnode->left, number);
+        computeheight(delnode);
+        temp = balance(root, delnode, delnode->left);
+        computeheight(temp);
+        return temp;
+        
+    }
+    
+    else if(delnode->data < number){
+        
+        delnode->right = deletenode(delnode, delnode->right, number);
+        computeheight(delnode);
+        temp = balance(root, delnode, delnode->left);
+        computeheight(temp);
+        return temp;
+        
+    }
+    
+    else if(delnode->data == number){
+        
+        if(delnode->left == NULL && delnode->right == NULL){
+                return NULL;
+        }
+        
+        else if(delnode->right == NULL){
+                return delnode->left;
+        }
+        
+        else if(delnode->left ==  NULL){
+                return delnode->right;
+        }
+        
+        else{
+                number = findnode(delnode,delnode->left);
+                delnode->data = number;
+                return delnode;
+        }
+        
+    }
+    
+    else{
+        
+                return;
+        
+    }
+    
+}
 
 void DepthFirstSearch(treenode * root){
     
@@ -223,13 +305,20 @@ int main(){
     treenode * root, * newnode, * prev, *subroot;
     bt = createtree();
     prev = bt->head;
-    root = createnode(21);
+    root = createnode(15);
     initialize(bt, root);
-    newnode = createnode(24);
-    subroot = insert(prev, root, newnode, 24);
-    newnode = createnode(22);
-    subroot = insert(prev, root, newnode, 22);
+    newnode = createnode(10);
+    subroot = insert(prev, root, newnode, 10);
+    newnode = createnode(18);
+    subroot = insert(prev, root, newnode, 18);
+    newnode = createnode(8);
+    subroot = insert(prev, root, newnode, 8);
+    newnode = createnode(12);
+    subroot = insert(prev, root, newnode, 12);
+    subroot = deletenode(prev, root, 18);
+    subroot = deletenode(prev, subroot, 10);
     DepthFirstSearch(subroot);
+    printf("\n");
     return 0;
     
 }
