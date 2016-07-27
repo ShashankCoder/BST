@@ -206,13 +206,13 @@ int findnode(treenode * root, treenode * delnode){
         
        if (delnode->data < root->data){
            
-           root->left = delnode;
+           root->left = delnode->left;
            return delnode->data;
        }
        
        else{
            
-           root->right = delnode;
+           root->right = delnode->left;
            return delnode->data;
        }
     }
