@@ -420,6 +420,8 @@ int main(){
     subroot = insert(prev, root, newnode, 12);
     subroot = deletenode(prev, root, 18);
     subroot = deletenode(prev, subroot, 12);
+    computeheight(subroot);
+    subroot = balance(prev, subroot, subroot->right);
     DepthFirstSearch(subroot);
     return 0;
     
