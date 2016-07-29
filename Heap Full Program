@@ -54,24 +54,30 @@ int findposition(tree * node, int number){
 
 void heapdown(tree * node, int initialnode){
     
-    int temp, finalnode;
+    int temp, finalnode1, finalnode2, finalnode;
     
     while(initialnode < MAX){
         
-        finalnode = (initialnode * 2) + 2;
-        
-        if(node->heap[initialnode] < node->heap[finalnode]){
+        finalnode1 = (initialnode * 2) + 1;
+        finalnode2 = (initialnode * 2) + 2;
+
+        if(node->heap[initialnode] < node->heap[finalnode1]){
             
             temp = node->heap[initialnode];
-            node->heap[initialnode] = node->heap[finalnode];
-            node->heap[finalnode] = temp;
-            initialnode = finalnode;
+            node->heap[initialnode] = node->heap[finalnode1];
+            node->heap[finalnode1] = temp;
+            finalnode = finalnode1;
         }
         
-        else{
+        if(node->heap[initialnode] < node->heap[finalnode2]){
             
-            return;
+            temp = node->heap[initialnode];
+            node->heap[initialnode] = node->heap[finalnode2];
+            node->heap[finalnode2] = temp;
+            finalnode = finalnode2;
         }
+        
+        initialnode = finalnode1;
         
     }
     
