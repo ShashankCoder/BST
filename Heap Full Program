@@ -1,0 +1,92 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX 20
+
+typedef struct tree{
+    
+    int heap[MAX];
+    int initialnode;
+    int finalnode;
+    
+}tree;
+
+void push(tree * node, int number){
+    
+    node->initialnode = node->initialnode + 1;
+    node-> heap[node->initialnode] = number;
+
+}
+
+tree * initialize(){
+    
+    int i;
+    tree * node;
+    node = (tree*)malloc(sizeof(tree));
+    
+    for(i = 0; i< MAX; i++){
+        
+        node->heap[i] = 0;
+        
+    }
+    
+    node->initialnode = -1;
+    node->finalnode = 0;
+    
+    return node;
+}
+
+void heapup (tree * node){
+    
+    int temp;
+    
+    while(node->initialnode >= 0){
+        
+        node->finalnode = (node->initialnode - 1)/2;
+        
+        if(node->heap[node->finalnode] < node->heap[node->initialnode]){
+            
+            temp = node->heap[node->finalnode];
+            node->heap[node->finalnode] = node->heap[node->initialnode];
+            node->heap[node->initialnode] = temp;
+            node->initialnode = node->finalnode;
+        }
+        
+        else{
+            
+            return;
+        }
+        
+        break;
+    }
+    
+}
+
+void insert(tree * node, int number){
+    
+    push(node, number);
+    heapup(node);
+    
+}
+
+void display(tree * node){
+    
+    int i = 0;
+    
+    while(node->heap[i] != 0)
+    {    
+        printf("%d\n", node->heap[i]);
+        i = i + 1;
+    }
+    
+}
+
+void main(){
+    
+    tree * node;
+    node = initialize();
+    insert(node, 42);
+    insert(node, 21);
+    insert(node, 32);
+    insert(node, 24);
+    display(node);
+}
