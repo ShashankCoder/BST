@@ -5,16 +5,24 @@
 typedef struct tree{
     
     int heap[MAX];
-    int initialnode;
-    int finalnode;
+    int top;
     
 }tree;
 
 void push(tree * node, int number){
     
-    node->initialnode = node->initialnode + 1;
-    node-> heap[node->initialnode] = number;
+    node->top = node->top + 1;
+    node-> heap[node->top] = number;
 
+}
+
+int pop(tree * node){
+    
+    int data;
+    data = node->heap[node->top] ;
+    node->top = node->top - 1;
+    return data;
+    
 }
 
 tree * initialize(){
@@ -29,26 +37,35 @@ tree * initialize(){
         
     }
     
-    node->initialnode = -1;
-    node->finalnode = 0;
-    
+    node->top = -1;
     return node;
 }
 
-void heapup (tree * node){
+int findposition(tree * node, int number){
     
-    int temp;
+    int i = 0;
     
-    while(node->initialnode >= 0){
+    while (node->heap[i] != number){
+        i = i + 1;
+    }
+    
+    return i;
+}
+
+void heapdown(tree * node, int initialnode){
+    
+    int temp, finalnode;
+    
+    while(initialnode < MAX){
         
-        node->finalnode = (node->initialnode - 1)/2;
+        finalnode = (initialnode * 2) + 2;
         
-        if(node->heap[node->finalnode] < node->heap[node->initialnode]){
+        if(node->heap[initialnode] < node->heap[finalnode]){
             
-            temp = node->heap[node->finalnode];
-            node->heap[node->finalnode] = node->heap[node->initialnode];
-            node->heap[node->initialnode] = temp;
-            node->initialnode = node->finalnode;
+            temp = node->heap[initialnode];
+            node->heap[initialnode] = node->heap[finalnode];
+            node->heap[finalnode] = temp;
+            initialnode = finalnode;
         }
         
         else{
@@ -56,15 +73,51 @@ void heapup (tree * node){
             return;
         }
         
-        break;
+    }
+    
+    
+}
+
+void heapup(tree * node, int initialnode){
+    
+    int temp, finalnode;
+    
+    while(initialnode >= 0){
+        
+        finalnode = (initialnode - 1)/2;
+        
+        if(node->heap[finalnode] < node->heap[initialnode]){
+            
+            temp = node->heap[finalnode];
+            node->heap[finalnode] = node->heap[initialnode];
+            node->heap[initialnode] = temp;
+            initialnode = finalnode;
+        }
+        
+        else{
+            
+            return;
+        }
     }
     
 }
 
 void insert(tree * node, int number){
     
+    int initialposition;
     push(node, number);
-    heapup(node);
+    initialposition = node->top;
+    heapup(node, initialposition);
+    
+}
+
+void deletenode(tree * node, int number){
+    
+    int initialposition;
+    initialposition = findposition(node, number);
+    number = pop(node);
+    node->heap[initialposition] = number;
+    heapdown(node, initialposition);
     
 }
 
@@ -84,9 +137,14 @@ void main(){
     
     tree * node;
     node = initialize();
-    insert(node, 42);
-    insert(node, 21);
-    insert(node, 32);
-    insert(node, 24);
+    insert(node, 10);
+    insert(node, 5);
+    insert(node, 8);
+    insert(node, 3);
+    insert(node, 4);
+    insert(node, 6);
+    insert(node, 7);
+    insert(node, 2);
+    deletenode(node,5);
     display(node);
 }
