@@ -20,6 +20,7 @@ int pop(tree * node){
     
     int data;
     data = node->heap[node->top] ;
+    node->heap[node->top] = 0;
     node->top = node->top - 1;
     return data;
     
@@ -146,15 +147,22 @@ void main(){
     
     tree * node;
     node = initialize();
-    insert(node, 10);
-    insert(node, 5);
-    insert(node, 8);
-    insert(node, 3);
-    insert(node, 4);
-    insert(node, 6);
-    insert(node, 7);
-    insert(node, 2);
-    deletenode(node,5);
+    insert(node, 50);
+    insert(node, 28);
+    insert(node, 40);
+    insert(node, 16);
+    insert(node, 24);
+    insert(node, 34);
+    insert(node, 38);
+    insert(node, 12);
+    insert(node, 14);
+    insert(node, 21);
+    insert(node, 23);
+    insert(node, 30);
+    insert(node, 32);
+    insert(node, 35);
+    insert(node, 37);
+    insert(node, 11);
+    deletenode(node, 28);
     display(node);
 }
- 
