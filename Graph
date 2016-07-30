@@ -1,0 +1,54 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX 20
+
+typedef struct Graph{
+    
+    struct node * head;
+    int count;
+    
+}Graph;
+
+typedef struct node{
+    
+    int data;
+    struct node * vertexpointer;
+    struct node * edgepointer;
+    
+}node;
+
+Graph * creategraph(){
+    
+    Graph * graph;
+    graph = (Graph *)malloc(sizeof(Graph));
+    graph->head = NULL;
+    graph->count = 0;
+    return graph;
+    
+}
+
+node * createvertex(int number){
+    
+    node * vertex;
+    vertex = (node*)malloc(sizeof(node));
+    vertex->data = number;
+    vertex->vertexpointer = NULL;
+    vertex->edgepointer = NULL;
+    return vertex;
+
+}
+
+int main(){
+    
+    Graph * graph;
+    node * vertex;
+    graph = creategraph();
+    vertex = createvertex(1);
+    vertex = createvertex(2);
+    vertex = createvertex(3);
+    vertex = createvertex(4);
+    vertex = createvertex(5);
+    vertex = createvertex(6);
+    return 0;
+   
+}
