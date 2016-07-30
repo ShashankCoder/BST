@@ -157,3 +157,4 @@ void main(){
     deletenode(node,5);
     display(node);
 }
+ 
