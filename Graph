@@ -1,10 +1,9 @@
 #include<stdio.h>
 #include<stdlib.h>
-#define MAX 20
 
 typedef struct Graph{
     
-    graphnode * head;
+    struct graphnode * head;
     int count;
     
 }Graph;
@@ -15,7 +14,35 @@ typedef struct graphnode{
     struct graphnode * vertexpointer;
     struct graphnode * edgepointer;
     
-}node;
+}graphnode;
+
+void insert(graphnode * vertex){
+    
+    graphnode * vertex1;
+    Graph * graph;
+    vertex1 = graph->head;
+    
+    if(vertex1 == NULL){
+        
+        graph->head = vertex;
+    }
+    
+    if(vertex1->vertexpointer != NULL){
+        
+        vertex1 = vertex1->vertexpointer;
+    }
+    vertex1->vertexpointer = vertex;
+    
+}
+
+graphnode * findposition(graphnode * vertex, int number){
+    
+    if(vertex->data != number){
+        
+        vertex = vertex->vertexpointer;
+    }
+    return vertex;
+}
 
 Graph * creategraph(){
     
@@ -41,7 +68,7 @@ graphnode * createvertex(int number){
 
 void createedge(graphnode * vertex, int number1, int number2){
     
-    graphnode * vertex1, vertex2, vertex3;
+    graphnode * vertex1, * vertex2, * vertex3;
     vertex1 = findposition(vertex, number1);
     vertex2 = findposition(vertex, number2);
     vertex3 = createvertex(number2);
@@ -55,41 +82,14 @@ void createedge(graphnode * vertex, int number1, int number2){
      
 }
 
-void initialize(Graph * graph, graphnode * vertex)
-
-    graph->head = vertex;
-    graph->count = 0;
+void DepthFirstSearch(graphnode * vertex){
     
-}
-
-void insert(graphnode * vertex){
-    
-    graphnode * vertex1;
-    Graph * graph;
-    vertex1 = graph->head;
-    
-    if(vertex1 == NULL){
+    while(vertex->vertexpointer != NULL){
         
-        graph->head = vertex;
-    }
-    
-    if(vertex1->vertexpointer != NULL){
-        
-        vertex1 = vertex1->vertexpointer;
-    }
-    vertex1->vertexpointer = vertex;
-    
-}
-
-int findposition(node * vertex, int number){
-    
-    if(vertex->data != number){
-        
+        printf("%d", vertex->data);
         vertex = vertex->vertexpointer;
     }
-    return vertex;
 }
-
 
 int main(){
     
@@ -102,7 +102,7 @@ int main(){
     vertex = createvertex(4);
     vertex = createvertex(5);
     vertex = createvertex(6);
-
+    DepthFirstSearch(graph->head);
     return 0;
    
 }
