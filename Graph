@@ -4,44 +4,97 @@
 
 typedef struct Graph{
     
-    struct node * head;
+    graphnode * head;
     int count;
     
 }Graph;
 
-typedef struct node{
+typedef struct graphnode{
     
     int data;
-    struct node * vertexpointer;
-    struct node * edgepointer;
+    struct graphnode * vertexpointer;
+    struct graphnode * edgepointer;
     
 }node;
 
 Graph * creategraph(){
     
     Graph * graph;
-    graph = (Graph *)malloc(sizeof(Graph));
+    graph = (Graph*)malloc(sizeof(Graph));
     graph->head = NULL;
     graph->count = 0;
     return graph;
     
 }
 
-node * createvertex(int number){
+graphnode * createvertex(int number){
     
-    node * vertex;
-    vertex = (node*)malloc(sizeof(node));
+    graphnode * vertex;
+    vertex = (graphnode*)malloc(sizeof(graphnode));
     vertex->data = number;
     vertex->vertexpointer = NULL;
     vertex->edgepointer = NULL;
+    insert(vertex);
     return vertex;
 
 }
 
+void createedge(graphnode * vertex, int number1, int number2){
+    
+    graphnode * vertex1, vertex2, vertex3;
+    vertex1 = findposition(vertex, number1);
+    vertex2 = findposition(vertex, number2);
+    vertex3 = createvertex(number2);
+
+    while(vertex1->edgepointer != NULL){
+        
+        vertex1 = vertex1->edgepointer;
+    }
+    vertex1->edgepointer = vertex3;
+    vertex3->vertexpointer = vertex2;
+     
+}
+
+void initialize(Graph * graph, graphnode * vertex)
+
+    graph->head = vertex;
+    graph->count = 0;
+    
+}
+
+void insert(graphnode * vertex){
+    
+    graphnode * vertex1;
+    Graph * graph;
+    vertex1 = graph->head;
+    
+    if(vertex1 == NULL){
+        
+        graph->head = vertex;
+    }
+    
+    if(vertex1->vertexpointer != NULL){
+        
+        vertex1 = vertex1->vertexpointer;
+    }
+    vertex1->vertexpointer = vertex;
+    
+}
+
+int findposition(node * vertex, int number){
+    
+    if(vertex->data != number){
+        
+        vertex = vertex->vertexpointer;
+    }
+    return vertex;
+}
+
+
 int main(){
     
     Graph * graph;
-    node * vertex;
+    graphnode * vertex;
     graph = creategraph();
     vertex = createvertex(1);
     vertex = createvertex(2);
@@ -49,6 +102,7 @@ int main(){
     vertex = createvertex(4);
     vertex = createvertex(5);
     vertex = createvertex(6);
+
     return 0;
    
 }
