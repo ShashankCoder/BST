@@ -39,7 +39,8 @@ graphnode * insert(Graph * graph, graphnode * vertex){
         
         vertex1 = vertex1->vertexpointer;
     }
-    
+    vertex1->vertexpointer = vertex;
+    return vertex;
 }
 
 Graph * creategraph(){
@@ -83,9 +84,10 @@ void DepthFirstSearch(graphnode * vertex){
     
     while(vertex->vertexpointer != NULL){
         
-        printf("%d", vertex->data);
+        printf("%d\n", vertex->data);
         vertex = vertex->vertexpointer;
     }
+    printf("%d\n", vertex->data);
 }
 
 int main(){
@@ -93,11 +95,19 @@ int main(){
     Graph * graph;
     graphnode * vertex;
     graph = creategraph();
-    printf("%p\n", graph);
     vertex = createvertex(1);
-    printf("%p\n", vertex);
-    vertex = insert(graph, vertex);
-    printf("%p\n", vertex);
+    insert(graph, vertex);
+    vertex = createvertex(2);
+    insert(graph, vertex);
+    vertex = createvertex(3);
+    insert(graph, vertex);
+    vertex = createvertex(4);
+    insert(graph, vertex);
+    vertex = createvertex(5);
+    insert(graph, vertex);
+    vertex = createvertex(6);
+    insert(graph, vertex);
+    DepthFirstSearch(graph->head);
     return 0;
    
 }
