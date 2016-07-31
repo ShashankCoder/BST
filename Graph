@@ -80,7 +80,7 @@ void createedge(graphnode * vertex, int number1, int number2){
      
 }
 
-void DepthFirstSearch(graphnode * vertex){
+void VertexSearch(graphnode * vertex){
     
     while(vertex->vertexpointer != NULL){
         
@@ -88,6 +88,26 @@ void DepthFirstSearch(graphnode * vertex){
         vertex = vertex->vertexpointer;
     }
     printf("%d\n", vertex->data);
+}
+
+void EdgeSearch(graphnode * vertex){
+    
+    graphnode * temp;
+    temp = vertex;
+    
+    if(vertex == NULL){
+        
+        return;
+    }
+    
+    while(vertex->edgepointer != NULL){
+        
+        printf("%d-", vertex->data);
+        vertex = vertex->edgepointer;
+    }
+    printf("%d-", vertex->data);
+    EdgeSearch(temp->vertexpointer);
+    
 }
 
 int main(){
@@ -107,6 +127,7 @@ int main(){
     insert(graph, vertex);
     vertex = createvertex(6);
     insert(graph, vertex);
+    VertexSearch(graph->head);
     createedge(graph->head, 1, 2);
     createedge(graph->head, 2, 3);
     createedge(graph->head, 3, 4);
@@ -114,7 +135,7 @@ int main(){
     createedge(graph->head, 3, 5);
     createedge(graph->head, 2, 5);
     createedge(graph->head, 5, 6);
-    DepthFirstSearch(graph->head);
+    EdgeSearch(graph->head);
     return 0;
    
 }
