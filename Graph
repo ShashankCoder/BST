@@ -16,31 +16,30 @@ typedef struct graphnode{
     
 }graphnode;
 
-void insert(graphnode * vertex){
+graphnode * findposition(graphnode * vertex, int number){
+    
+    while(vertex->data != number){
+        
+        vertex = vertex->vertexpointer;
+    }
+    return vertex;
+}
+
+graphnode * insert(Graph * graph, graphnode * vertex){
     
     graphnode * vertex1;
-    Graph * graph;
     vertex1 = graph->head;
-    
-    if(vertex1 == NULL){
+    if(graph->head == NULL){
         
         graph->head = vertex;
+        return vertex;
     }
     
-    if(vertex1->vertexpointer != NULL){
+    while(vertex1->vertexpointer != NULL){
         
         vertex1 = vertex1->vertexpointer;
     }
     vertex1->vertexpointer = vertex;
-    
-}
-
-graphnode * findposition(graphnode * vertex, int number){
-    
-    if(vertex->data != number){
-        
-        vertex = vertex->vertexpointer;
-    }
     return vertex;
 }
 
@@ -61,7 +60,6 @@ graphnode * createvertex(int number){
     vertex->data = number;
     vertex->vertexpointer = NULL;
     vertex->edgepointer = NULL;
-    insert(vertex);
     return vertex;
 
 }
@@ -86,9 +84,10 @@ void DepthFirstSearch(graphnode * vertex){
     
     while(vertex->vertexpointer != NULL){
         
-        printf("%d", vertex->data);
+        printf("%d\n", vertex->data);
         vertex = vertex->vertexpointer;
     }
+    printf("%d\n", vertex->data);
 }
 
 int main(){
@@ -97,12 +96,26 @@ int main(){
     graphnode * vertex;
     graph = creategraph();
     vertex = createvertex(1);
+    insert(graph, vertex);
     vertex = createvertex(2);
+    insert(graph, vertex);
     vertex = createvertex(3);
+    insert(graph, vertex);
     vertex = createvertex(4);
+    insert(graph, vertex);
     vertex = createvertex(5);
+    insert(graph, vertex);
     vertex = createvertex(6);
+    insert(graph, vertex);
+    createedge(graph->head, 1, 2);
+    createedge(graph->head, 2, 3);
+    createedge(graph->head, 3, 4);
+    createedge(graph->head, 4, 5);
+    createedge(graph->head, 3, 5);
+    createedge(graph->head, 2, 5);
+    createedge(graph->head, 5, 6);
     DepthFirstSearch(graph->head);
     return 0;
    
 }
+
