@@ -1,92 +1,103 @@
 #include<stdio.h>
 #include<stdlib.h>
-#define MAX 20
 
-typedef struct tree{
+typedef struct Graph{
     
-    int heap[MAX];
-    int initialnode;
-    int finalnode;
+    struct graphnode * head;
+    int count;
     
-}tree;
+}Graph;
 
-void push(tree * node, int number){
+typedef struct graphnode{
     
-    node->initialnode = node->initialnode + 1;
-    node-> heap[node->initialnode] = number;
+    int data;
+    struct graphnode * vertexpointer;
+    struct graphnode * edgepointer;
+    
+}graphnode;
 
+graphnode * findposition(graphnode * vertex, int number){
+    
+    while(vertex->data != number){
+        
+        vertex = vertex->vertexpointer;
+    }
+    return vertex;
 }
 
-tree * initialize(){
+graphnode * insert(Graph * graph, graphnode * vertex){
     
-    int i;
-    tree * node;
-    node = (tree*)malloc(sizeof(tree));
-    
-    for(i = 0; i< MAX; i++){
+    graphnode * vertex1;
+    vertex1 = graph->head;
+    if(graph->head == NULL){
         
-        node->heap[i] = 0;
-        
+        graph->head = vertex;
+        return vertex;
     }
     
-    node->initialnode = -1;
-    node->finalnode = 0;
-    
-    return node;
-}
-
-void heapup (tree * node){
-    
-    int temp;
-    
-    while(node->initialnode >= 0){
+    while(vertex1->vertexpointer != NULL){
         
-        node->finalnode = (node->initialnode - 1)/2;
-        
-        if(node->heap[node->finalnode] < node->heap[node->initialnode]){
-            
-            temp = node->heap[node->finalnode];
-            node->heap[node->finalnode] = node->heap[node->initialnode];
-            node->heap[node->initialnode] = temp;
-            node->initialnode = node->finalnode;
-        }
-        
-        else{
-            
-            return;
-        }
-        
-        break;
+        vertex1 = vertex1->vertexpointer;
     }
     
 }
 
-void insert(tree * node, int number){
+Graph * creategraph(){
     
-    push(node, number);
-    heapup(node);
+    Graph * graph;
+    graph = (Graph*)malloc(sizeof(Graph));
+    graph->head = NULL;
+    graph->count = 0;
+    return graph;
     
 }
 
-void display(tree * node){
+graphnode * createvertex(int number){
     
-    int i = 0;
+    graphnode * vertex;
+    vertex = (graphnode*)malloc(sizeof(graphnode));
+    vertex->data = number;
+    vertex->vertexpointer = NULL;
+    vertex->edgepointer = NULL;
+    return vertex;
+
+}
+
+void createedge(graphnode * vertex, int number1, int number2){
     
-    while(node->heap[i] != 0)
-    {    
-        printf("%d\n", node->heap[i]);
-        i = i + 1;
+    graphnode * vertex1, * vertex2, * vertex3;
+    vertex1 = findposition(vertex, number1);
+    vertex2 = findposition(vertex, number2);
+    vertex3 = createvertex(number2);
+
+    while(vertex1->edgepointer != NULL){
+        
+        vertex1 = vertex1->edgepointer;
     }
-    
+    vertex1->edgepointer = vertex3;
+    vertex3->vertexpointer = vertex2;
+     
 }
 
-void main(){
+void DepthFirstSearch(graphnode * vertex){
     
-    tree * node;
-    node = initialize();
-    insert(node, 42);
-    insert(node, 21);
-    insert(node, 32);
-    insert(node, 24);
-    display(node);
+    while(vertex->vertexpointer != NULL){
+        
+        printf("%d", vertex->data);
+        vertex = vertex->vertexpointer;
+    }
+}
+
+int main(){
+    
+    Graph * graph;
+    graphnode * vertex;
+    graph = creategraph();
+    printf("%p\n", graph);
+    vertex = createvertex(1);
+    printf("%p\n", vertex);
+    vertex = insert(graph, vertex);
+    printf("%p\n", vertex);
+    return 0;
+   
 }
