@@ -94,6 +94,7 @@ void EdgeSearch(graphnode * vertex){
     
     graphnode * temp;
     temp = vertex;
+    vertex = vertex->edgepointer;
     
     if(vertex == NULL){
         
@@ -102,10 +103,12 @@ void EdgeSearch(graphnode * vertex){
     
     while(vertex->edgepointer != NULL){
         
-        printf("%d-", vertex->data);
+        printf("%d-", temp->data); 
+        printf("%d\n", vertex->data);
         vertex = vertex->edgepointer;
     }
-    printf("%d-", vertex->data);
+    printf("%d-", temp->data);
+    printf("%d\n", vertex->data);
     EdgeSearch(temp->vertexpointer);
     
 }
@@ -139,4 +142,3 @@ int main(){
     return 0;
    
 }
-
