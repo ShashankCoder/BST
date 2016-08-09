@@ -16,6 +16,16 @@ typedef struct graphnode{
     
 }graphnode;
 
+Graph * creategraph(){
+    
+    Graph * graph;
+    graph = (Graph*)malloc(sizeof(Graph));
+    graph->head = NULL;
+    graph->count = 0;
+    return graph;
+    
+}
+
 graphnode * findposition(graphnode * vertex, int number){
     
     while(vertex->data != number){
@@ -41,16 +51,6 @@ graphnode * insert(Graph * graph, graphnode * vertex){
     }
     vertex1->vertexpointer = vertex;
     return vertex;
-}
-
-Graph * creategraph(){
-    
-    Graph * graph;
-    graph = (Graph*)malloc(sizeof(Graph));
-    graph->head = NULL;
-    graph->count = 0;
-    return graph;
-    
 }
 
 graphnode * createvertex(int number){
@@ -139,6 +139,7 @@ int main(){
     createedge(graph->head, 2, 5);
     createedge(graph->head, 5, 6);
     EdgeSearch(graph->head);
+    SmallestPath(graph->head, NULL, 0);
     return 0;
    
 }
