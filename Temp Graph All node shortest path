@@ -16,6 +16,16 @@ typedef struct graphnode{
     
 }graphnode;
 
+Graph * creategraph(){
+    
+    Graph * graph;
+    graph = (Graph*)malloc(sizeof(Graph));
+    graph->head = NULL;
+    graph->count = 0;
+    return graph;
+    
+}
+
 graphnode * findposition(graphnode * vertex, int number){
     
     while(vertex->data != number){
@@ -41,16 +51,6 @@ graphnode * insert(Graph * graph, graphnode * vertex){
     }
     vertex1->vertexpointer = vertex;
     return vertex;
-}
-
-Graph * creategraph(){
-    
-    Graph * graph;
-    graph = (Graph*)malloc(sizeof(Graph));
-    graph->head = NULL;
-    graph->count = 0;
-    return graph;
-    
 }
 
 graphnode * createvertex(int number){
@@ -80,14 +80,39 @@ void createedge(graphnode * vertex, int number1, int number2){
      
 }
 
-void DepthFirstSearch(graphnode * vertex){
+void SmallestPath(graphnode * source, graphnode * destination, int distance){
     
-    while(vertex->vertexpointer != NULL){
+    while(source != NULL){
         
-        printf("%d\n", vertex->data);
-        vertex = vertex->vertexpointer;
-    }
-    printf("%d\n", vertex->data);
+        push(s, source);
+        destination = source->edgepointer;
+        
+        while(destination !=  NULL){
+            
+            if(destination->vertexpointer->repeat == 1){
+                
+                destination = destination->edgepointer;
+            }
+            
+            push(s, destination);
+            distance = distance + destination->data; 
+            createtree(source, destination, distance);
+            temp = destination->vertexpointer;
+            
+            while(temp != NULL){
+                
+                temp = temp->edgepointer;
+                push(s, temp);
+                distance = distance + temp->data;
+                createtree(source, destination, distance);
+                temp = temp->vertexpointer;
+            }
+            
+            pop(s);
+            destination = stacktop(s);
+            destination = destination->edgepointer;
+            
+        }   
 }
 
 int main(){
@@ -107,7 +132,16 @@ int main(){
     insert(graph, vertex);
     vertex = createvertex(6);
     insert(graph, vertex);
-    DepthFirstSearch(graph->head);
+    VertexSearch(graph->head);
+    createedge(graph->head, 1, 2);
+    createedge(graph->head, 2, 3);
+    createedge(graph->head, 3, 4);
+    createedge(graph->head, 4, 5);
+    createedge(graph->head, 3, 5);
+    createedge(graph->head, 2, 5);
+    createedge(graph->head, 5, 6);
+    EdgeSearch(graph->head);
+    SmallestPath(graph->head, NULL, 0);
     return 0;
    
 }
