@@ -138,27 +138,24 @@ void SmallestPath(graphnode * source, graphnode * destination, int distance){
         
         push(nodepath, source);
         destination = source->edgepointer;
-        
-        while(destination !=  NULL){
-            
-            distance = distance + destination->data; 
                 
-            while(temp != NULL){
+            while(destination != NULL){
                 
                 if(destination->vertexpointer->repeat == 1){
-                    destination = destination ->edgepointer;
                     temp = destination->vertexpointer;
+                    destination = destination->edgepointer;
                 }
                 
                 else{
-                    temp = destination->vertexpointer;
-                    push(nodepath, temp);
-                    createtree(source, temp, distance);
-                    temp = temp->edgepointer;
-                    destination = temp;
-                }    
                     
-            }
+                    while(temp != NULL){
+                        temp = destination->vertexpointer;
+                        push(nodepath, temp);
+                        createtree(source, temp, distance);
+                        temp = temp->edgepointer;
+                        destination = temp;
+                    }    
+                }
             
             destination = pop(nodepath);
             destination = destination->edgepointer;
