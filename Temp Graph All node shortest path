@@ -155,12 +155,14 @@ void SmallestPath(graphnode * source, graphnode * destination, int distance){
                         temp = temp->edgepointer;
                         destination = temp;
                     }    
-                }
             
-            destination = pop(nodepath);
-            destination = destination->edgepointer;
-        }
+                    destination = pop(nodepath);        
+                    destination = destination->edgepointer;
+                }
+            }
         
+        destination = pop(nodepath);
+        destination = destination->edgepointer;
         clearpath(source);
         source = source->vertexpointer;
     }
