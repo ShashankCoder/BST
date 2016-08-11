@@ -141,28 +141,41 @@ void SmallestPath(graphnode * source, graphnode * destination, int distance){
                 
             while(destination != NULL){
                 
-                if(destination->vertexpointer->repeat == 1){
-                    temp = destination->vertexpointer;
-                    destination = destination->edgepointer;
+                if(destination->vertexpointer->repeat != 1){
+                        
+                        while(temp != NULL){
+                        
+                            temp = destination->vertexpointer;
+                            temp->repeat = 1;
+                            push(distancestack, destination->data);
+                            push(nodepath, temp);
+                            distance = stacktop(distancestack);
+                            createtree(source, temp, distance);
+                            temp = temp->edgepointer;
+                            destination = temp;
+                        }    
                 }
                 
                 else{
+                        
+                        while(destination->vertexpointer->repeat == 1){
                     
-                    while(temp != NULL){
-                        temp = destination->vertexpointer;
-                        push(nodepath, temp);
-                        createtree(source, temp, distance);
-                        temp = temp->edgepointer;
-                        destination = temp;
-                    }    
-            
-                    destination = pop(nodepath);        
-                    destination = destination->edgepointer;
+                            if(destination-> edgepointer == NULL){
+                                 break;
+                            }
+                    
+                            else{
+                                temp = destination->vertexpointer;
+                                destination = destination->edgepointer;
+                            }
+                        }
                 }
+                
+                pop(distancestack);
+                destination = pop(nodepath);
+                destination = destination->edgepointer;
             }
-        
-        destination = pop(nodepath);
-        destination = destination->edgepointer;
+    
         clearpath(source);
         source = source->vertexpointer;
     }
