@@ -20,8 +20,10 @@ typedef struct graphnode{
 
 typedef struct Stack{
     
-    graphnode * list [MAX];
-    int top;
+    int listdistance[MAX];
+    graphnode * listnode [MAX];
+    int topnode;
+    int topdistance;
 
 }Stack;
 
@@ -29,7 +31,6 @@ Stack * createstack(){
     
     Stack * nodepath;
     nodepath = (Stack*)malloc(sizeof(Stack));
-    nodepath->top = 0;
     return nodepath;
     
 }
@@ -39,27 +40,49 @@ Stack * initializestack(){
     int i;
     Stack * nodepath;
     nodepath = (Stack*)malloc(sizeof(Stack));
-    nodepath->top = 0;
+    nodepath->nodetop = 0;
+    nodepath->distancetop = 0;
 
     for(i=0;i< MAX; i++){
-        nodepath->list[i] = NULL;
+        nodepath->nodelist[i] = NULL;
+    }
+    
+    for(i=0;i< MAX; i++){
+        nodepath->distancelist[i] = 0;
     }
     return nodepath;
 }
 
-graphnode * push(Stack * nodepath, graphnode * node){
+void pushlistnode(Stack * nodepath, graphnode * node){
     
-   nodepath->top = nodepath->top + 1;
-   nodepath->list[nodepath->top] =   node;
+   nodepath->topnode = nodepath->topnode + 1;
+   nodepath->listnode[nodepath->topnode] =   node;
    
 }
 
-graphnode * pop(Stack * nodepath){
+void pushdistancenode (Stack * nodepath, int distance){
+    
+    int prevdistance;
+    prevdistance = nodepath->lististance[nodepath->topdistance];
+    nodepath->topdistance = nodepath->topdistance + 1;
+    nodepath->listdistance[nodepath->topdistance] =  prevdistance + distance;
+}
+
+graphnode * popnodelist(Stack * nodepath){
     
     graphnode * node;
-    node = nodepath->list[nodepath->top-1];
-    nodepath->top = nodepath->top - 1;
+    node = nodepath->nodelist[nodepath->nodetop-1];
+    nodepath->nodetop = nodepath->nodetop - 1;
     return node;
+    
+}
+
+void popdistancelist(Stack * nodepath){
+    
+    int distance;
+    distance = nodepath->distancelist[nodepath->nodetop-1];
+    nodepath->distancetop = nodepath->distancetop - 1;
+    return distance;
     
 }
 
@@ -136,7 +159,7 @@ void SmallestPath(graphnode * source, graphnode * destination, int distance){
     
     while(source != NULL){
         
-        push(nodepath, source);
+        pushnodelist(nodepath, source);
         destination = source->edgepointer;
                 
             while(destination != NULL){
@@ -147,8 +170,8 @@ void SmallestPath(graphnode * source, graphnode * destination, int distance){
                         
                             temp = destination->vertexpointer;
                             temp->repeat = 1;
-                            push(distancestack, destination->data);
-                            push(nodepath, temp);
+                            pushdistancelist(distancestack, destination->data);
+                            pushnodelist(nodepath, temp);
                             distance = stacktop(distancestack);
                             createtree(source, temp, distance);
                             temp = temp->edgepointer;
@@ -171,8 +194,8 @@ void SmallestPath(graphnode * source, graphnode * destination, int distance){
                         }
                 }
                 
-                pop(distancestack);
-                destination = pop(nodepath);
+                popdistancelist(distancestack);
+                destination = popnodelist(nodepath);
                 destination = destination->edgepointer;
             }
     
