@@ -5,7 +5,6 @@
 typedef struct Graph{
     
     struct graphnode * head;
-    struct graphnode * solution;
     int count;
     
 }Graph;
@@ -22,10 +21,8 @@ typedef struct graphnode{
 
 typedef struct Stack{
     
-    int listdistance[MAX];
     graphnode * listnode [MAX];
     int topnode;
-    int topdistance;
 
 }Stack;
 
@@ -36,7 +33,6 @@ Stack * createstack(){
     return nodepath;
     
 }
-
 
 int stacktop(Stack * s){
     
@@ -242,57 +238,44 @@ void displaypath(){
     }
 }
 
-void SmallestPath(graphnode * source, graphnode * destination, int distance){
+void SmallestPath(graphnode * node){
     
-    graphnode * temp, * next;
+    graphnode * source, * destination, * temp;
     Stack * nodepath;
     nodepath = initializestack();
     
+    source = node;
+    if(source == NULL){
+        
+        return;
+    }
+    
     while(source != NULL){
         
-        pushnodelist(nodepath, source);
+        push(nodepath, source);
         destination = source->edgepointer;
                 
             while(destination != NULL){
                 
-                if(destination->vertexpointer->repeat != 1){
+                if(destination->repeat != 1){
                         
-                        while(temp != NULL){
-                        
-                            temp = destination->vertexpointer;
-                            temp->repeat = 1;
-                            pushdistancelist(nodepath, destination->data);
-                            pushnodelist(nodepath, temp);
-                            distance = stacktop(nodepath);
-                            createtree(source, temp, distance);
-                            temp = temp->edgepointer;
-                            destination = temp;
-                        }    
+                        destination->repeat = 1;
+                        push(nodepath, destination);
+                        temp = destination->vertexpointer;
+                        destination = temp->edgepointer;
                 }
                 
                 else{
                         
-                        while(destination->vertexpointer->repeat == 1){
-                    
-                            if(destination-> edgepointer == NULL){
-                                 break;
-                            }
-                    
-                            else{
-                                temp = destination->vertexpointer;
-                                destination = destination->edgepointer;
-                            }
-                        }
+                        break;
                 }
-                
-                popdistancelist(nodepath);
-                destination = popnodelist(nodepath);
-                destination = destination->edgepointer;
             }
-    
-        clearpath(source);
-        source = source->vertexpointer;
+            
+            source = pop(nodepath);    
+              
     }
+    
+    findpath(node->vertexpointer);
 }
 
 int main(){
