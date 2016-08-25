@@ -37,13 +37,6 @@ Stack * createstack(){
     
 }
 
-int stacktop(Stack * nodepath){
-    
-    int data;
-    data = nodepath->listdistance[nodepath->topdistance];
-    return data;
-}
-
 Stack * initializestack(){
     
     int i;
@@ -80,6 +73,14 @@ graphnode * pop(Stack * nodepath){
     
 }
 
+int stacktop(Stack * nodepath){
+    
+    int data;
+    data = nodepath->listdistance[nodepath->topdistance];
+    return data;
+    
+}
+
 Graph * creategraph(){
     
     Graph * graph;
@@ -104,15 +105,6 @@ void clearpath(){
     }
 }
 
-graphnode * findposition(graphnode * vertex, int number){
-    
-    while(vertex->data != number){
-        
-        vertex = vertex->vertexpointer;
-    }
-    return vertex;
-}
-
 graphnode * insert(Graph * graph, graphnode * vertex){
     
     graphnode * vertex1;
@@ -129,6 +121,15 @@ graphnode * insert(Graph * graph, graphnode * vertex){
     }
     
     vertex1->vertexpointer = vertex;
+    return vertex;
+}
+
+graphnode * findposition(graphnode * vertex, int number){
+    
+    while(vertex->data != number){
+        
+        vertex = vertex->vertexpointer;
+    }
     return vertex;
 }
 
@@ -195,29 +196,6 @@ void createedge(graphnode * vertex, int number1, int number2){
      
 }
 
-void displaypath(){
-    
-    Graph * graph;
-    graphnode * source, * destination;
-    
-    source = graph->solution;
-    
-    while(source != NULL){
-        
-        destination = source->edgepointer;
-        
-        while(destination != NULL){
-            
-            printf("%d-", source->data);
-            printf("%d\n", destination->data);
-            printf("%d\n", destination->distance);
-            destination = destination->edgepointer;
-        }
-        
-        source = source->vertexpointer;
-    }
-}
-
 graphnode * SmallestPath(Stack * nodepath, Graph * graph, graphnode * node){
     
     graphnode * source, * destination, * temp;
@@ -258,6 +236,29 @@ graphnode * SmallestPath(Stack * nodepath, Graph * graph, graphnode * node){
     
     SmallestPath(nodepath, graph, node->vertexpointer);
     return;
+}
+
+void displaypath(){
+    
+    Graph * graph;
+    graphnode * source, * destination;
+    
+    source = graph->solution;
+    
+    while(source != NULL){
+        
+        destination = source->edgepointer;
+        
+        while(destination != NULL){
+            
+            printf("%d-", source->data);
+            printf("%d\n", destination->data);
+            printf("%d\n", destination->distance);
+            destination = destination->edgepointer;
+        }
+        
+        source = source->vertexpointer;
+    }
 }
 
 int main(){
