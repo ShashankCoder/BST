@@ -50,6 +50,7 @@ Stack * initializestack(){
     Stack * nodepath;
     nodepath = (Stack*)malloc(sizeof(Stack));
     nodepath->topnode = 0;
+    nodepath->topdistance = 0;
 
     for(i=0;i< MAX; i++){
         nodepath->listnode[i] = NULL;
