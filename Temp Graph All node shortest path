@@ -217,7 +217,7 @@ void displaypath(){
     }
 }
 
-graphnode * SmallestPath(Stack * nodepath, graphnode * node){
+graphnode * SmallestPath(Stack * nodepath, Graph * graph, graphnode * node){
     
     graphnode * source, * destination, * temp;
 
@@ -240,7 +240,7 @@ graphnode * SmallestPath(Stack * nodepath, graphnode * node){
                         create_solutiongraph_vertex(destination->data);
                         destination->repeat = 1;
                         push(nodepath, destination);
-                        create_solutiongraph_edge(nodepath, graphnode->solution, source->data, destination->data);
+                        create_solutiongraph_edge(nodepath, graph->solution, source->data, destination->data);
                         temp = destination->vertexpointer;
                         destination = temp->edgepointer;
                 }
@@ -255,7 +255,8 @@ graphnode * SmallestPath(Stack * nodepath, graphnode * node){
               
     }
     
-    Smallestpath(nodepath, node->vertexpointer);
+    SmallestPath(nodepath, graph, node->vertexpointer);
+    return;
 }
 
 int main(){
@@ -273,7 +274,7 @@ int main(){
     createedge(graph->head, 1, 2);
     createedge(graph->head, 1, 3);
     createedge(graph->head, 2, 3);
-    SmallestPath(nodepath, graph->head);
+    SmallestPath(nodepath, graph, graph->head);
     displaypath();
     return 0;
    
