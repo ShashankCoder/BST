@@ -1,0 +1,281 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX 20
+
+typedef struct Graph{
+    
+    struct graphnode * head;
+    struct graphnode * solution;
+    int count;
+    
+}Graph;
+
+typedef struct graphnode{
+    
+    int data;
+    int repeat;
+    int distance;
+    struct graphnode * vertexpointer;
+    struct graphnode * edgepointer;
+    
+}graphnode;
+
+typedef struct Stack{
+    
+    graphnode * listnode [MAX];
+    int listdistance [MAX];
+    int topnode;
+    int topdistance;
+
+}Stack;
+
+Stack * createstack(){
+    
+    int i;
+    Stack * nodepath;
+    nodepath = (Stack*)malloc(sizeof(Stack));
+    nodepath->topnode = -1;
+    nodepath->topdistance = -1;
+
+    for(i=0;i< MAX; i++){
+        nodepath->listnode[i] = NULL;
+    }
+    
+    for(i=0;i< MAX; i++){
+        nodepath->listdistance[i] = 0;
+    }
+    
+    return nodepath;
+    
+}
+
+void push(Stack * nodepath, graphnode * node){
+    
+   nodepath->topnode = nodepath->topnode + 1;
+   nodepath->topdistance = nodepath->topdistance + 1;
+   nodepath->listnode[nodepath->topnode] =   node;
+   nodepath->listdistance[nodepath->topdistance] = node->distance;
+   
+}
+
+graphnode * pop(Stack * nodepath){
+    
+    graphnode * node;
+    node = nodepath->listnode[nodepath->topnode-1];
+    nodepath->topnode = nodepath->topnode - 1;
+    nodepath->topdistance = nodepath->topdistance - 1;
+    return node;
+    
+}
+
+int stacktop(Stack * nodepath){
+    
+    int data;
+    data = nodepath->listdistance[nodepath->topdistance];
+    return data;
+    
+}
+
+Graph * creategraph(){
+    
+    Graph * graph;
+    graph = (Graph*)malloc(sizeof(Graph));
+    graph->head = NULL;
+    graph->count = 0;
+    return graph;
+    
+}
+
+void clearpath(){
+    
+    Graph * graph;
+    graphnode * source;
+    
+    source = graph->head;
+    while(source != NULL){
+        
+        source->repeat = 0;
+        source = source->vertexpointer;
+        
+    }
+}
+
+graphnode * createvertex(int number){
+    
+    graphnode * vertex;
+    vertex = (graphnode*)malloc(sizeof(graphnode));
+    vertex->data = number;
+    vertex->vertexpointer = NULL;
+    vertex->edgepointer = NULL;
+    return vertex;
+
+}
+
+void createedge(graphnode * vertex, int number1, int number2){
+    
+    graphnode * vertex1, * vertex2, * vertex3;
+    vertex1 = findposition(vertex, number1);
+    vertex2 = findposition(vertex, number2);
+    vertex3 = createvertex(number2);
+
+    while(vertex1->edgepointer != NULL){
+        
+        vertex1 = vertex1->edgepointer;
+    }
+    vertex1->edgepointer = vertex3;
+    vertex3->vertexpointer = vertex2;
+     
+}
+
+graphnode * findposition(graphnode * vertex, int number){
+    
+    while(vertex->data != number){
+        
+        vertex = vertex->vertexpointer;
+    }
+    return vertex;
+}
+
+
+graphnode * insert(Graph * graph, graphnode * vertex){
+    
+    graphnode * vertex1;
+    vertex1 = graph->head;
+    if(graph->head == NULL){
+        
+        graph->head = vertex;
+        return vertex;
+    }
+    
+    while(vertex1->vertexpointer != NULL){
+        
+        vertex1 = vertex1->vertexpointer;
+    }
+    
+    vertex1->vertexpointer = vertex;
+    return vertex;
+}
+
+graphnode * create_solutionvertex(int number){
+    
+    graphnode * vertex;
+    vertex = (graphnode*)malloc(sizeof(graphnode));
+    vertex->data = number;
+    vertex->vertexpointer = NULL;
+    vertex->edgepointer = NULL;
+    return vertex;
+}
+
+void create_solutionedge(Stack * nodepath, graphnode * vertex, int number1, int number2){
+    
+    graphnode * vertex1, * vertex2, * vertex3;
+    vertex1 = findposition(vertex, number1);
+    vertex2 = findposition(vertex, number2);
+    vertex3 = create_solutionvertex(number2);
+
+    while(vertex1->edgepointer != NULL){
+    
+        if(vertex1->data == number2){
+            
+            if(vertex1->distance > stacktop(nodepath))
+                vertex->distance = stacktop(nodepath);
+            return;
+        }
+        
+        else{
+            
+            vertex1 = vertex1->edgepointer;
+        }
+    }    
+    
+    vertex1->edgepointer = vertex3;
+    vertex3->vertexpointer = vertex2;
+}
+
+
+graphnode * SmallestPath(Stack * nodepath, Graph * graph, graphnode * node){
+    
+    graphnode * source, * destination, * temp;
+
+    source = node;
+    create_solutionvertex(node->data);
+    if(source == NULL){
+        
+        return;
+    }
+    
+    while(source != NULL){
+        
+        push(nodepath, source);
+        destination = source->edgepointer;
+                
+            while(destination != NULL){
+                
+                if(destination->repeat != 1){
+                        
+                        create_solutionvertex(destination->data);
+                        destination->repeat = 1;
+                        push(nodepath, destination);
+                        create_solutionedge(nodepath, graph->solution, source->data, destination->data);
+                        temp = destination->vertexpointer;
+                        destination = temp->edgepointer;
+                }
+                
+                else{
+                        
+                        break;
+                }
+            }
+            
+            source = pop(nodepath);    
+              
+    }
+    
+    SmallestPath(nodepath, graph, node->vertexpointer);
+    return;
+}
+
+void displaypath(){
+    
+    Graph * graph;
+    graphnode * source, * destination;
+    
+    source = graph->solution;
+    
+    while(source != NULL){
+        
+        destination = source->edgepointer;
+        
+        while(destination != NULL){
+            
+            printf("%d-", source->data);
+            printf("%d\n", destination->data);
+            printf("%d\n", destination->distance);
+            destination = destination->edgepointer;
+        }
+        
+        source = source->vertexpointer;
+    }
+}
+
+int main(){
+    
+    Graph * graph;
+    graphnode * vertex;
+    static Stack * nodepath;
+    nodepath = createstack();
+    graph = creategraph();
+    vertex = createvertex(1);
+    insert(graph, vertex);
+    vertex = createvertex(2);
+    insert(graph, vertex);
+    vertex = createvertex(3);
+    createedge(graph->head, 1, 2);
+    createedge(graph->head, 1, 3);
+    createedge(graph->head, 2, 3);
+    SmallestPath(nodepath, graph, graph->head);
+    displaypath();
+    return 0;
+   
+}
+
