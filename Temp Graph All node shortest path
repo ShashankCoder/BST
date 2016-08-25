@@ -34,10 +34,10 @@ Stack * createstack(){
     
 }
 
-int stacktop(Stack * s){
+int stacktop(Stack * nodepath){
     
     int data;
-    data = s->listdistance[s->topdistance];
+    data = nodepath->listdistance[nodepath->topdistance];
     return data;
 }
 
@@ -118,6 +118,42 @@ graphnode * insert(Graph * graph, graphnode * vertex){
     }
     vertex1->vertexpointer = vertex;
     return vertex;
+}
+
+graphnode * create_solutiongraph_vertex(int number){
+    
+    graphnode * vertex;
+    vertex = (graphnode*)malloc(sizeof(graphnode));
+    vertex->data = number;
+    vertex->vertexpointer = NULL;
+    vertex->edgepointer = NULL;
+    return vertex
+}
+
+graphnode * create_solutiongraph_edge(graphnode * vertex, int number1, int number2){
+    
+    graphnode * vertex1, * vertex2, * vertex3;
+    vertex1 = findposition(vertex, number1);
+    vertex2 = findposition(vertex, number2);
+    vertex3 = createvertex(number2);
+
+    while(vertex1->edgepointer != NULL){
+    
+        if(vertex1->data == number2){
+            
+            if(vertex->distance > number)
+                vertex->distance = number;
+            return;
+        }
+        
+        else{
+            
+            vertex = vertex->edgepointer;
+        }
+    }    
+    
+    vertex1->edgepointer = vertex3;
+    vertex3->vertexpointer = vertex2
 }
 
 graphnode * createvertex(int number){
@@ -222,6 +258,7 @@ void SmallestPath(graphnode * node){
     nodepath = initializestack();
     
     source = node;
+    createvertex(node->data);
     if(source == NULL){
         
         return;
@@ -236,8 +273,10 @@ void SmallestPath(graphnode * node){
                 
                 if(destination->repeat != 1){
                         
+                        create_solutiongraph_vertex(destination->data);
                         destination->repeat = 1;
                         push(nodepath, destination);
+                        create_solutiongraph_edge(graph->solution, source->data, destination->data);
                         temp = destination->vertexpointer;
                         destination = temp->edgepointer;
                 }
