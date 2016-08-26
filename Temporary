@@ -100,6 +100,15 @@ void clearpath(){
     }
 }
 
+graphnode * findposition(graphnode * vertex, int number){
+    
+    while(vertex->data != number){
+        
+        vertex = vertex->vertexpointer;
+    }
+    return vertex;
+}
+
 graphnode * createvertex(int number){
     
     graphnode * vertex;
@@ -126,16 +135,6 @@ void createedge(graphnode * vertex, int number1, int number2){
     vertex3->vertexpointer = vertex2;
      
 }
-
-graphnode * findposition(graphnode * vertex, int number){
-    
-    while(vertex->data != number){
-        
-        vertex = vertex->vertexpointer;
-    }
-    return vertex;
-}
-
 
 graphnode * insert(Graph * graph, graphnode * vertex){
     
@@ -278,4 +277,3 @@ int main(){
     return 0;
    
 }
-
