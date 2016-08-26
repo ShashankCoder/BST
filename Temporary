@@ -6,8 +6,7 @@ typedef struct Graph{
     
     struct graphnode * head;
     struct graphnode * solution;
-    int count;
-    
+
 }Graph;
 
 typedef struct graphnode{
@@ -51,10 +50,10 @@ Stack * createstack(){
 
 void push(Stack * nodepath, graphnode * node){
     
-   nodepath->topnode = nodepath->topnode + 1;
-   nodepath->topdistance = nodepath->topdistance + 1;
-   nodepath->listnode[nodepath->topnode] =   node;
-   nodepath->listdistance[nodepath->topdistance] = node->distance;
+    nodepath->topnode = nodepath->topnode + 1;
+    nodepath->topdistance = nodepath->topdistance + 1;
+    nodepath->listnode[nodepath->topnode] =   node;
+    nodepath->listdistance[nodepath->topdistance] = node->distance;
    
 }
 
