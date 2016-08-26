@@ -139,7 +139,6 @@ int main(){
     createedge(graph->head, 2, 5);
     createedge(graph->head, 5, 6);
     EdgeSearch(graph->head);
-    SmallestPath(graph->head, NULL, 0);
     return 0;
    
 }
