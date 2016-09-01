@@ -24,13 +24,13 @@ Graph * creategraph(){
     
 }
 
-void isEmpty(Graph * graph, graphnode * vertex){
+graphnode * isEmpty(graphnode * vertex1, graphnode * vertex){
    
-    if(graph->head == NULL){
+    if(vertex1 == NULL){
         
-        graph->head = vertex;
+        return vertex;
     }
-    return;
+    return vertex1;
 }
 
 graphnode * findposition(graphnode * vertex, int number){
@@ -122,7 +122,7 @@ int main(){
     graphnode * vertex;
     graph = creategraph();
     vertex = createvertex(1);
-    isEmpty(graph, vertex);
+    graph->head = isEmpty(graph->head, vertex);
     insert(graph->head, vertex);
     vertex = createvertex(2);
     insert(graph->head, vertex);
