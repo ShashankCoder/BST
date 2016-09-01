@@ -113,19 +113,19 @@ graphnode * findposition(graphnode * vertex, int number){
     return vertex;
 }
 
-graphnode * insert(Graph * graph, graphnode * vertex){
+graphnode * insert(Graph * graph, graphnode * vertex1, graphnode * vertex){
     
-    graphnode * vertex1;
-    vertex1 = graph->head;
-    if(graph->head == NULL){
-        
-        graph->head = vertex;
-        return vertex;
-    }
+    graphnode * vertex2;
     
     while(vertex1->vertexpointer != NULL){
         
-        vertex1 = vertex1->vertexpointer;
+        if(vertex1->data = vertex->data){
+            return vertex;
+        }
+        
+        else{
+            vertex1 = vertex1->vertexpointer;
+        }
     }
     
     vertex1->vertexpointer = vertex;
@@ -150,83 +150,29 @@ void createedge(graphnode * vertex, int number1, int number2){
     graphnode * vertex1, * vertex2, * vertex3;
     vertex1 = findposition(vertex, number1);
     vertex2 = findposition(vertex, number2);
-    vertex3 = createvertex(number2);
 
     while(vertex1->edgepointer != NULL){
         
-        vertex1 = vertex1->edgepointer;
-    }
-    vertex1->edgepointer = vertex3;
-    vertex3->vertexpointer = vertex2;
-     
-}
-
-graphnode * insert_solutionvertex (Graph * graph, graphnode * vertex){
-    
-    graphnode * vertex1, * vertex2;
-    vertex1 = graph->solution;
-    
-    if(graph->solution == NULL){
-        
-        graph->solution = vertex;
-        return vertex;
-    }
-    
-    while(vertex1 != NULL){
-        
-        if(vertex1->data == vertex->data){
-            vertex2->vertexpointer = vertex1;
-            return vertex;
+        if(vertex1->data == vertex2->data){
             
-        }
-        
-        else{
-            vertex2 = vertex1;
-        }
-        
-        vertex1 = vertex1->vertexpointer;
-    }
-    
-    vertex2->vertexpointer = vertex;
-    return vertex;
-}
-
-graphnode * create_solutionvertex(int number){
-    
-    graphnode * vertex;
-    vertex = (graphnode*)malloc(sizeof(graphnode));
-    vertex->data = number;
-    vertex->repeat = 0;
-    vertex->distance = 999;
-    vertex->vertexpointer = NULL;
-    vertex->edgepointer = NULL;
-    return vertex;
-}
-
-void create_solutionedge(Stack * nodepath, graphnode * vertex, int number1, int number2){
-    
-    graphnode * vertex1, * vertex2, * vertex3;
-    vertex1 = findposition(vertex, number1);
-    vertex2 = findposition(vertex, number2);
-
-    while(vertex1 != NULL){
-    
-        if(vertex1->data == number2){
-            
-            if(vertex1->distance > topdistance(nodepath))
-                vertex->distance = topdistance(nodepath);
-            return;
+            if(vertex1->distance < topdistance(nodepath))
+                return;
+                
+            else
+                vertex1->distance = topdistance(nodepath);
+                
         }
         
         else{
             
             vertex1 = vertex1->edgepointer;
         }
-    }    
+    }
     
-    vertex3 = create_solutionvertex(number2);
+    vertex3 = createvertex(number2);
     vertex1->edgepointer = vertex3;
     vertex3->vertexpointer = vertex2;
+     
 }
 
 graphnode * SmallestPath(Stack * nodepath, Graph * graph, graphnode * node){
@@ -236,8 +182,8 @@ graphnode * SmallestPath(Stack * nodepath, Graph * graph, graphnode * node){
     source = node;
     push(nodepath, source);
     
-    vertex = create_solutionvertex(node->data);
-    insert_solutionvertex(graph, vertex);
+    vertex = createvertex(node->data);
+    insert(graph, graph->solution, vertex);
     
     if(source == NULL){
         
@@ -250,13 +196,15 @@ graphnode * SmallestPath(Stack * nodepath, Graph * graph, graphnode * node){
                 
             while(destination != NULL){
                 
-                if(destination->vertexpointer->repeat != 1){
+                if(destination->repeat != 1){
                     
                         destination->repeat = 1;
                         push(nodepath, destination);
-                        vertex = create_solutionvertex(destination->data);
-                        insert_solutionvertex(graph, vertex);
-                        create_solutionedge(nodepath, graph->solution, source->data, destination->data);
+                        
+                        vertex = createvertex(destination->data);
+                        insert(graph, vertex);
+                        createedge(nodepath, graph->solution, source->data, destination->data);
+                        
                         temp = destination->vertexpointer;
                         destination = temp->edgepointer;
                 }
@@ -269,7 +217,6 @@ graphnode * SmallestPath(Stack * nodepath, Graph * graph, graphnode * node){
             }
         
         source = topnode(nodepath); 
-        source->repeat = 0;
         pop(nodepath);
               
     }
