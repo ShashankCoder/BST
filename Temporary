@@ -239,12 +239,9 @@ graphnode * SmallestPath(Stack * nodepath, Graph * graph, graphnode * node){
     return;
 }
 
-void displaypath(){
+void displaypath(graphnode * source){
     
-    Graph * graph;
-    graphnode * source, * destination;
-    
-    source = graph->solution;
+    graphnode * destination;
     
     while(source != NULL){
         
@@ -292,8 +289,9 @@ int main(){
     createedge(nodepath, graph->head, 4, 5);
     createedge(nodepath, graph->head, 3, 6);
     createedge(nodepath, graph->head, 5, 6);
+    
     SmallestPath(nodepath, graph, graph->head);
-    displaypath();
+    displaypath(graph->solution);
     return 0;
    
 }
