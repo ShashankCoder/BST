@@ -104,6 +104,16 @@ Graph * creategraph(){
     
 }
 
+graphnode * isEmpty(graphnode * vertex1, graphnode * vertex){
+   
+    if(vertex1 == NULL){
+        
+        return vertex;
+    }
+    return vertex1;
+}
+
+
 graphnode * findposition(graphnode * vertex, int number){
     
     while(vertex->data != number){
@@ -113,14 +123,17 @@ graphnode * findposition(graphnode * vertex, int number){
     return vertex;
 }
 
-graphnode * insert(Graph * graph, graphnode * vertex1, graphnode * vertex){
+void insert(graphnode * vertex1, graphnode * vertex){
     
-    graphnode * vertex2;
+    if(vertex1->data == vertex->data){
+        
+        return;
+    }
     
     while(vertex1->vertexpointer != NULL){
         
-        if(vertex1->data = vertex->data){
-            return vertex;
+        if(vertex1-> data == vertex-> data){
+            return;
         }
         
         else{
@@ -129,7 +142,6 @@ graphnode * insert(Graph * graph, graphnode * vertex1, graphnode * vertex){
     }
     
     vertex1->vertexpointer = vertex;
-    return vertex;
 }
 
 graphnode * createvertex(int number){
@@ -170,6 +182,7 @@ void createedge(Stack * nodepath, graphnode * vertex, int number1, int number2){
     }
     
     vertex3 = createvertex(number2);
+    vertex3->distance = topdistance(nodepath);
     vertex1->edgepointer = vertex3;
     vertex3->vertexpointer = vertex2;
      
@@ -177,13 +190,14 @@ void createedge(Stack * nodepath, graphnode * vertex, int number1, int number2){
 
 graphnode * SmallestPath(Stack * nodepath, Graph * graph, graphnode * node){
     
-    graphnode * source, * destination, * temp;
-    graphnode * vertex;
+    graphnode * source, * destination, * temp, * vertex;
+
     source = node;
     push(nodepath, source);
     
     vertex = createvertex(node->data);
-    insert(graph, graph->solution, vertex);
+    graph->solution = isEmpty(graph->solution, vertex);
+    insert(graph->solution, vertex);
     
     if(source == NULL){
         
@@ -202,7 +216,7 @@ graphnode * SmallestPath(Stack * nodepath, Graph * graph, graphnode * node){
                         push(nodepath, destination);
                         
                         vertex = createvertex(destination->data);
-                        insert(graph, graph->head, vertex);
+                        insert(graph->solution, vertex);
                         createedge(nodepath, graph->solution, source->data, destination->data);
                         
                         temp = destination->vertexpointer;
@@ -257,17 +271,18 @@ int main(){
     graph = creategraph();
     
     vertex = createvertex(1);
-    insert(graph, graph->head, vertex);
+    graph->head = isEmpty(graph->head, vertex);
+    insert(graph->head, vertex);
     vertex = createvertex(2);
-    insert(graph, graph->head, vertex);
+    insert(graph->head, vertex);
     vertex = createvertex(3);
-    insert(graph, graph->head, vertex);
+    insert(graph->head, vertex);
     vertex = createvertex(4);
-    insert(graph, graph->head, vertex);
+    insert(graph->head, vertex);
     vertex = createvertex(5);
-    insert(graph, graph->head, vertex);
+    insert(graph->head, vertex);
     vertex = createvertex(6);
-    insert(graph, graph->head, vertex);
+    insert(graph->head, vertex);
     
     createedge(nodepath, graph->head, 1, 2);
     createedge(nodepath, graph->head, 1, 3);
