@@ -145,7 +145,7 @@ graphnode * createvertex(int number){
 
 }
 
-void createedge(graphnode * vertex, int number1, int number2){
+void createedge(Stack * nodepath, graphnode * vertex, int number1, int number2){
     
     graphnode * vertex1, * vertex2, * vertex3;
     vertex1 = findposition(vertex, number1);
@@ -202,7 +202,7 @@ graphnode * SmallestPath(Stack * nodepath, Graph * graph, graphnode * node){
                         push(nodepath, destination);
                         
                         vertex = createvertex(destination->data);
-                        insert(graph, vertex);
+                        insert(graph, graph->head, vertex);
                         createedge(nodepath, graph->solution, source->data, destination->data);
                         
                         temp = destination->vertexpointer;
@@ -255,26 +255,28 @@ int main(){
     Stack * nodepath;
     nodepath = createstack();
     graph = creategraph();
+    
     vertex = createvertex(1);
-    insert(graph, vertex);
+    insert(graph, graph->head, vertex);
     vertex = createvertex(2);
-    insert(graph, vertex);
+    insert(graph, graph->head, vertex);
     vertex = createvertex(3);
-    insert(graph, vertex);
+    insert(graph, graph->head, vertex);
     vertex = createvertex(4);
-    insert(graph, vertex);
+    insert(graph, graph->head, vertex);
     vertex = createvertex(5);
-    insert(graph, vertex);
+    insert(graph, graph->head, vertex);
     vertex = createvertex(6);
-    insert(graph, vertex);
-    createedge(graph->head, 1, 2);
-    createedge(graph->head, 1, 3);
-    createedge(graph->head, 2, 3);
-    createedge(graph->head, 1, 4);
-    createedge(graph->head, 1, 5);
-    createedge(graph->head, 4, 5);
-    createedge(graph->head, 3, 6);
-    createedge(graph->head, 5, 6);
+    insert(graph, graph->head, vertex);
+    
+    createedge(nodepath, graph->head, 1, 2);
+    createedge(nodepath, graph->head, 1, 3);
+    createedge(nodepath, graph->head, 2, 3);
+    createedge(nodepath, graph->head, 1, 4);
+    createedge(nodepath, graph->head, 1, 5);
+    createedge(nodepath, graph->head, 4, 5);
+    createedge(nodepath, graph->head, 3, 6);
+    createedge(nodepath, graph->head, 5, 6);
     SmallestPath(nodepath, graph, graph->head);
     displaypath();
     return 0;
