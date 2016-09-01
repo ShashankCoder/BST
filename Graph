@@ -4,8 +4,7 @@
 typedef struct Graph{
     
     struct graphnode * head;
-    int count;
-    
+
 }Graph;
 
 typedef struct graphnode{
@@ -21,9 +20,17 @@ Graph * creategraph(){
     Graph * graph;
     graph = (Graph*)malloc(sizeof(Graph));
     graph->head = NULL;
-    graph->count = 0;
     return graph;
     
+}
+
+void isEmpty(Graph * graph, graphnode * vertex){
+   
+    if(graph->head == NULL){
+        
+        graph->head = vertex;
+    }
+    return;
 }
 
 graphnode * findposition(graphnode * vertex, int number){
@@ -35,22 +42,18 @@ graphnode * findposition(graphnode * vertex, int number){
     return vertex;
 }
 
-graphnode * insert(Graph * graph, graphnode * vertex){
+void insert(graphnode * vertex1, graphnode * vertex){
     
-    graphnode * vertex1;
-    vertex1 = graph->head;
-    if(graph->head == NULL){
-        
-        graph->head = vertex;
-        return vertex;
+    if(vertex1 == vertex){
+	
+	return;
     }
-    
+
     while(vertex1->vertexpointer != NULL){
         
         vertex1 = vertex1->vertexpointer;
     }
     vertex1->vertexpointer = vertex;
-    return vertex;
 }
 
 graphnode * createvertex(int number){
@@ -119,17 +122,18 @@ int main(){
     graphnode * vertex;
     graph = creategraph();
     vertex = createvertex(1);
-    insert(graph, vertex);
+    isEmpty(graph, vertex);
+    insert(graph->head, vertex);
     vertex = createvertex(2);
-    insert(graph, vertex);
+    insert(graph->head, vertex);
     vertex = createvertex(3);
-    insert(graph, vertex);
+    insert(graph->head, vertex);
     vertex = createvertex(4);
-    insert(graph, vertex);
+    insert(graph->head, vertex);
     vertex = createvertex(5);
-    insert(graph, vertex);
+    insert(graph->head, vertex);
     vertex = createvertex(6);
-    insert(graph, vertex);
+    insert(graph->head, vertex);
     VertexSearch(graph->head);
     createedge(graph->head, 1, 2);
     createedge(graph->head, 2, 3);
