@@ -66,7 +66,6 @@ void push(Stack * nodepath, graphnode * node){
         prevdistance = nodepath->listdistance[nodepath->topdistance - 1];
         nodepath->listdistance[nodepath->topdistance] = node->distance + prevdistance;
    }
-   nodepath->listnode[nodepath->topnode] = node;
 }
 
 graphnode * pop(Stack * nodepath){
@@ -293,6 +292,7 @@ int main(){
     createedge(graph->head, 3, 6, 7);
     createedge(graph->head, 5, 6, 3);
 
+    SmallestPath(nodepath, graph, graph->head);
     return 0;
    
 }
