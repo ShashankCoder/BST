@@ -226,19 +226,6 @@ void EdgeSearch(graphnode * vertex){
     
 }
 
-void display(Stack * nodepath){
-    
-    int i;
-    graphnode * node;
-    
-    for(i=0; nodepath->listnode[i] != NULL; i++) {
-        
-        node = nodepath->listnode[i];
-        printf("%d-", node->data);
-        printf("%d\n", nodepath->listdistance[i]);
-    }
-}
-
 void displaypath(graphnode * source){
     
     graphnode * destination;
@@ -277,7 +264,8 @@ void SmallestPath(Stack * nodepath, Graph * graph, graphnode * node){
     }
                 
     
-    
+    if(source != NULL){
+        
         destination = source->edgepointer;
         
         while(destination != NULL){
@@ -290,7 +278,7 @@ void SmallestPath(Stack * nodepath, Graph * graph, graphnode * node){
                 vertex = createvertex(destination->data);
                 insert(graph->solution, vertex);
                 distance = topdistance(nodepath);
-                createedge(graph->solution, source->data, destination->data, distance);
+                createedge(graph->solution, node->data, destination->data, distance);
                         
                 temp = destination->vertexpointer;
                 destination = temp->edgepointer;
@@ -298,10 +286,10 @@ void SmallestPath(Stack * nodepath, Graph * graph, graphnode * node){
         
         }
     
-    source = topnode(nodepath); 
-    pop(nodepath);
+        source = topnode(nodepath); 
+        pop(nodepath);
+    }
     displaypath(graph->solution);
-    
 }
 
 int main(){
