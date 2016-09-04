@@ -18,56 +18,6 @@ typedef struct graphnode{
     
 }graphnode;
 
-typedef struct Stack{
-    
-    graphnode * listnode [MAX];
-    int listdistance [MAX];
-    int topnode;
-    int topdistance;
-
-}Stack;
-
-Stack * createstack(){
-    
-    int i;
-    Stack * nodepath;
-    nodepath = (Stack*)malloc(sizeof(Stack));
-    nodepath->topnode = -1;
-    nodepath->topdistance = -1;
-
-    for(i=0;i< MAX; i++){
-        nodepath->listnode[i] = NULL;
-    }
-    
-    for(i=0;i< MAX; i++){
-        nodepath->listdistance[i] = 0;
-    }
-    
-    return nodepath;
-    
-}
-
-void push(Stack * nodepath, graphnode * node){
-    
-   int prevdistance;
-  
-   nodepath->topnode = nodepath->topnode + 1;
-   nodepath->topdistance = nodepath->topdistance + 1;
-   nodepath->listnode[nodepath->topnode] =   node;
-   
-   if(nodepath->topdistance == 0){
-       
-        nodepath->listdistance[nodepath->topdistance] = node->distance;
-   }
-   
-   else{
-       
-        prevdistance = nodepath->listdistance[nodepath->topdistance - 1];
-        nodepath->listdistance[nodepath->topdistance] = node->distance + prevdistance;
-   }
-}
-
-
 Graph * creategraph(){
     
     Graph * graph;
@@ -118,7 +68,7 @@ void insert(graphnode * vertex1, graphnode * vertex){
     vertex1->vertexpointer = vertex;
 }
 
-graphnode * createvertex(int number, Stack * nodepath){
+graphnode * createvertex(int number){
     
     graphnode * vertex;
     vertex = (graphnode*)malloc(sizeof(graphnode));
@@ -126,18 +76,17 @@ graphnode * createvertex(int number, Stack * nodepath){
     vertex->distance = 0;
     vertex->vertexpointer = NULL;
     vertex->edgepointer = NULL;
-    push(nodepath, vertex);
     return vertex;
 
 }
 
-void createedge(graphnode * vertex, Stack * nodepath,  int number1, int number2, int distance){
+void createedge(graphnode * vertex, int number1, int number2, int distance){
     
     graphnode * vertex1, * vertex2, * vertex3, * tempvertex;
     
     vertex1 = findposition(vertex, number1);
     vertex2 = findposition(vertex, number2);
-    vertex3 = createvertex(number2, nodepath);
+    vertex3 = createvertex(number2);
     vertex3-> distance = distance;
 
     while(vertex1 != NULL){
@@ -200,55 +149,40 @@ void EdgeSearch(graphnode * vertex){
     
 }
 
-void display(Stack * nodepath){
-    
-    int i;
-    graphnode * node;
-    
-    for(i=0; nodepath->listnode[i] != NULL; i++) {
-        
-        node = nodepath->listnode[i];
-        printf("%d-", node->data);
-        printf("%d\n", nodepath->listdistance[i]);
-    }
-}
 
 int main(){
     
     Graph * graph;
-    Stack * nodepath;
     graphnode * vertex;
     graph = creategraph();
-    nodepath = createstack();
     
-    vertex = createvertex(1, nodepath);
+    vertex = createvertex(1);
     graph->head = isEmpty(graph->head, vertex);
     insert(graph->head, vertex);
-    vertex = createvertex(2, nodepath);
+    vertex = createvertex(2);
     insert(graph->head, vertex);
-    vertex = createvertex(3, nodepath);
+    vertex = createvertex(3);
     insert(graph->head, vertex);
-    vertex = createvertex(4, nodepath);
+    vertex = createvertex(4);
     insert(graph->head, vertex);
-    vertex = createvertex(5, nodepath);
+    vertex = createvertex(5);
     insert(graph->head, vertex);
-    vertex = createvertex(6, nodepath);
+    vertex = createvertex(6);
     insert(graph->head, vertex);
     VertexSearch(graph->head);
 
 
-    createedge(graph->head, nodepath, 1, 2, 5);
-    createedge(graph->head, nodepath, 1, 3, 8);
-    createedge(graph->head, nodepath, 2, 3, 2);
-    createedge(graph->head, nodepath, 1, 4, 6);
-    createedge(graph->head, nodepath, 1, 5, 3);
-    createedge(graph->head, nodepath, 4, 5, 5);
-    createedge(graph->head, nodepath, 3, 6, 7);
-    createedge(graph->head, nodepath, 5, 6, 3);
+    createedge(graph->head, 1, 2, 5);
+    createedge(graph->head, 1, 3, 8);
+    createedge(graph->head, 2, 3, 2);
+    createedge(graph->head, 1, 4, 6);
+    createedge(graph->head, 1, 5, 3);
+    createedge(graph->head, 4, 5, 5);
+    createedge(graph->head, 3, 6, 7);
+    createedge(graph->head, 5, 6, 3);
     EdgeSearch(graph->head);
 
-    display(nodepath);
-    
+
     return 0;
    
 }
