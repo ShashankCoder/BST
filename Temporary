@@ -12,8 +12,8 @@ typedef struct Graph{
 typedef struct graphnode{
     
     int data;
-    int repeat;
     int distance;
+    int repeat;
     struct graphnode * vertexpointer;
     struct graphnode * edgepointer;
     
@@ -72,6 +72,7 @@ graphnode * pop(Stack * nodepath){
     
     graphnode * node;
     node = nodepath->listnode[nodepath->topnode];
+    nodepath->listnode[nodepath->topnode] = NULL;
     nodepath->topnode = nodepath->topnode - 1;
     nodepath->topdistance = nodepath->topdistance - 1;
     return node;
@@ -86,7 +87,7 @@ graphnode * topnode(Stack * nodepath){
     
 }
 
-int topdistance( Stack * nodepath){
+int topdistance(Stack * nodepath){
     
     int data;
     data = nodepath->listdistance[nodepath->topdistance];
@@ -150,7 +151,6 @@ graphnode * createvertex(int number){
     vertex = (graphnode*)malloc(sizeof(graphnode));
     vertex->data = number;
     vertex->distance = 0;
-    vertex->repeat = 0;
     vertex->vertexpointer = NULL;
     vertex->edgepointer = NULL;
     return vertex;
@@ -193,52 +193,37 @@ void createedge(graphnode * vertex, int number1, int number2, int distance){
      
 }
 
-graphnode * SmallestPath(Stack * nodepath, Graph * graph, graphnode * node){
+void VertexSearch(graphnode * vertex){
     
-    graphnode * source, * destination, * temp, * vertex;
-    int distance;
+    while(vertex->vertexpointer != NULL){
+        
+        printf("%d\n", vertex->data);
+        vertex = vertex->vertexpointer;
+    }
+    printf("%d\n", vertex->data);
+}
 
-    source = node;
-    push(nodepath, source);
+void EdgeSearch(graphnode * vertex){
     
-    vertex = createvertex(source->data);
-    graph->solution = isEmpty(graph->solution, vertex);
-    insert(graph->solution, vertex);
+    graphnode * temp;
+    temp = vertex;
+    vertex = vertex->edgepointer;
     
-    if(source == NULL){
+    if(vertex == NULL){
         
         return;
     }
     
-    while(source != NULL){
+    while(vertex->edgepointer != NULL){
         
-        destination = source->edgepointer;
-                
-            while(destination != NULL){
-                
-                if(destination->repeat != 1){
-                    
-                        destination->repeat = 1;
-                        push(nodepath, destination);
-                        
-                        vertex = createvertex(destination->data);
-                        insert(graph->solution, vertex);
-                        distance = topdistance(nodepath);
-                        createedge(graph->solution, source->data, destination->data, distance);
-                        
-                        temp = destination->vertexpointer;
-                        destination = temp->edgepointer;
-                }
-                
-            }
-        
-        source = topnode(nodepath); 
-        pop(nodepath);
-              
+        printf("%d-", temp->data); 
+        printf("%d\n", vertex->data);
+        vertex = vertex->edgepointer;
     }
+    printf("%d-", temp->data);
+    printf("%d\n", vertex->data);
+    EdgeSearch(temp->vertexpointer);
     
-    SmallestPath(nodepath, graph, node->vertexpointer);
-    return;
 }
 
 void displaypath(graphnode * source){
@@ -261,38 +246,94 @@ void displaypath(graphnode * source){
     }
 }
 
+void SmallestPath(Stack * nodepath, Graph * graph, graphnode * node){
+    
+    graphnode * source, * destination, * temp, * vertex;
+    int distance, c =0;
+    
+    source = node;
+
+    vertex = createvertex(source->data);
+    graph->solution = isEmpty(graph->solution, vertex);
+    insert(graph->solution, vertex);
+    
+    while(c < 5){
+        
+        destination = source->edgepointer;
+        
+        while(destination != NULL){
+            
+            destination->repeat = 1;
+            push(nodepath, destination);
+                        
+            vertex = createvertex(destination->data);
+            insert(graph->solution, vertex);
+            distance = topdistance(nodepath);
+            createedge(graph->solution, node->data, destination->data, distance);
+                        
+            temp = destination->vertexpointer;
+            destination = temp->edgepointer;
+        
+        }
+    
+        source = topnode(nodepath);
+        
+        if(source == NULL){
+            return;
+        }
+        
+        source->repeat = 0;
+        pop(nodepath);
+        printf("%d\n",source->data);
+        c = c + 1;
+    }
+        
+        displaypath(graph->solution);
+    
+}
+
 int main(){
     
     Graph * graph;
-    graphnode * vertex;
     Stack * nodepath;
-    nodepath = createstack();
+    graphnode * vertex;
     graph = creategraph();
+    nodepath = createstack();
     
     vertex = createvertex(1);
     graph->head = isEmpty(graph->head, vertex);
     insert(graph->head, vertex);
+    push(nodepath, vertex);
     vertex = createvertex(2);
     insert(graph->head, vertex);
+    push(nodepath, vertex);
     vertex = createvertex(3);
+    push(nodepath, vertex);
     insert(graph->head, vertex);
     vertex = createvertex(4);
+    push(nodepath, vertex);
     insert(graph->head, vertex);
     vertex = createvertex(5);
+    push(nodepath, vertex);
     insert(graph->head, vertex);
     vertex = createvertex(6);
+    push(nodepath, vertex);
     insert(graph->head, vertex);
+    VertexSearch(graph->head);
 
-    createedge(graph->head, 1, 2, 5);
-    createedge(graph->head, 1, 3, 8);
-    createedge(graph->head, 2, 3, 2);
-    createedge(graph->head, 1, 4, 6);
-    createedge(graph->head, 1, 5, 3);
-    createedge(graph->head, 4, 5, 5);
-    createedge(graph->head, 3, 6, 7);
-    createedge(graph->head, 5, 6, 3);
+    createedge(graph->head, 1, 2, 3);
+    createedge(graph->head, 1, 3, 2);
+    createedge(graph->head, 2, 3, 3);
+    createedge(graph->head, 1, 4, 2);
+    createedge(graph->head, 4, 5, 1);
+    createedge(graph->head, 1, 5, 4);
+    createedge(graph->head, 3, 6, 4);
+    createedge(graph->head, 5, 6, 5);
+    EdgeSearch(graph->head);
 
+    
     SmallestPath(nodepath, graph, graph->head);
+    
     return 0;
    
 }
