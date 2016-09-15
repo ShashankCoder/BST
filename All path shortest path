@@ -190,7 +190,7 @@ void displaypath(graphnode * source){
     }
 }
 
-void check(graphnode * vertex, int number1, int number2, int distance1){
+void check(graphnode * vertex, int number1, int number2, graphnode * destination, int distance1){
 
     graphnode * vertex1, * tempvertex;
     
@@ -216,9 +216,9 @@ void check(graphnode * vertex, int number1, int number2, int distance1){
     
     if(vertex == NULL){
         
-        
         vertex1 = createvertex(number2);
         vertex1->distance = distance1;
+        vertex1->vertexpointer = destination;
         tempvertex->edgepointer = vertex1;
     }
 }
@@ -226,33 +226,28 @@ void check(graphnode * vertex, int number1, int number2, int distance1){
 
 void SmallestPath(Stack * nodepath, Graph * graph, graphnode * node){
     
-    graphnode * source, * destination, * temp, * vertex, * temp1;
-    int distance, position, c = 0, count = 0;
+    graphnode * source, * destination, * temp;
+    int distance;
     
     source = node;
-    temp1 = node;
 
-    while(c < 16){
+    while(source != NULL){
         
         destination = source->edgepointer;
 
         while(destination != NULL){
-            
+                
             push(nodepath, destination);
-            printf("%d\n",nodepath->top);
-
             distance = topdistance(nodepath);
-            check(graph->head, node->data, destination->data, distance);
-            
+            check(graph->head, node->data, destination->data, destination, distance);
             temp = destination->vertexpointer;
             destination = temp->edgepointer;
             
         }
         
         source = pop(nodepath);
-        c = c + 1;
     }
-       
+    
     displaypath(graph->head); 
 }
 
