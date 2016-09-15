@@ -29,6 +29,7 @@ Stack * createstack(){
     
     int i;
     Stack * nodepath;
+    
     nodepath = (Stack*)malloc(sizeof(Stack));
     nodepath->top = 0;
 
@@ -70,14 +71,6 @@ int topdistance(Stack * nodepath){
     int data;
     data = nodepath->listdistance[nodepath->top];
     return data;
-}
-
-int top(Stack * nodepath){
-    
-    int data;
-    data = nodepath->top;
-    return data;
-    
 }
 
 Graph * creategraph(){
