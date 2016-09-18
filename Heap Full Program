@@ -60,31 +60,40 @@ void heapdown(tree * node, int initialnode){
     
     finalnode1 = (initialnode * 2) + 1;
     finalnode2 = (initialnode * 2) + 2;
-
+    
     if(node->heap[finalnode1] == 0){
         
         return;
     }
     
-    if(node->heap[initialnode] < node->heap[finalnode1]){
-            
-            temp = node->heap[initialnode];
-            node->heap[initialnode] = node->heap[finalnode1];
-            node->heap[finalnode1] = temp;
-            heapdown(node, finalnode1);
-    }
+    if(node->heap[finalnode2] != 0){
     
-    if(node->heap[finalnode2] == 0){
+        if(node->heap[finalnode1] < node->heap[finalnode2]){
         
-        return;
-    }
-        
-    if(node->heap[initialnode] < node->heap[finalnode2]){
-            
             temp = node->heap[initialnode];
             node->heap[initialnode] = node->heap[finalnode2];
             node->heap[finalnode2] = temp;
             heapdown(node, finalnode2);
+    
+        }
+    
+        else{
+        
+            temp = node->heap[initialnode];
+            node->heap[initialnode] = node->heap[finalnode1];
+            node->heap[finalnode1] = temp;
+            heapdown(node, finalnode1);
+        
+        }
+
+    }
+    
+    else {
+        
+        temp = node->heap[initialnode];
+        node->heap[initialnode] = node->heap[finalnode1];
+        node->heap[finalnode1] = temp;
+        heapdown(node, finalnode1);      
     }
     
 }
