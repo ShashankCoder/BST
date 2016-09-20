@@ -4,6 +4,7 @@
 typedef struct head{
     
     struct radix * start;
+    struct radix * solution;
     int count;
     
 }head;
@@ -35,7 +36,7 @@ radix * createnode(int value){
     
 }
 
-radix * isEmpy(radix * node, radix * temp){
+radix * isEmpty(radix * node, radix * temp){
     
     if(temp == NULL){
         
@@ -65,12 +66,14 @@ void display(radix * node){
     }
 }
 
-void radixsort(radix * node){
+void radixsort(radix * node, head * nodepointer){
     
-    radix * temp;
+    radix * temp,* start, * sol;
+    start = node;
     temp = node;
+    int k, number;
     
-    while(k >! 1000){
+    while(k <= 1000){
         
         while(node != NULL){
             
@@ -81,11 +84,22 @@ void radixsort(radix * node){
             nodepointer->solution = isEmpty(node, nodepointer->solution);
             insert(sol, nodepointer->solution, number);
             
+            while ((start->data < number) && (start->next != NULL)){
+                
+                start = start->next;
+            }
+            
+            while(temp != start){
+                
+                temp->data = temp->next->data;
+                temp = temp->next;
+            }
+            
+            temp->data = number;
             node = node -> next;
-            
-            
-            
+        
         }
+            k = k * 10;
     }
 }
 
@@ -99,7 +113,7 @@ int main(){
     printf("Enter number of elements\n");
 
     node = createnode(103);
-    nodepointer->head = isEmpty(node, nodepointer->head);
+    nodepointer->start = isEmpty(node, nodepointer->start);
     insert(node, nodepointer->start, 103);
     node  = createnode(108);
     insert(node, nodepointer->start, 108);
@@ -108,9 +122,9 @@ int main(){
     node = createnode(117);
     insert(node, nodepointer->start, 117);
     node = createnode(105);
-    insert(node, nodepointer->sart, 105);
+    insert(node, nodepointer->start, 105);
 
     
     display(nodepointer->start);
-    radixsort(nodepointer->start);
-}
+    radixsort(nodepointer->start, nodepointer);
+}             
