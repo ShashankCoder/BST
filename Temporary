@@ -1,349 +1,89 @@
 #include<stdio.h>
 #include<stdlib.h>
-#define MAX 20
 
-typedef struct Graph{
+typedef struct head{
     
-    struct graphnode * head;
-
-}Graph;
-
-typedef struct graphnode{
+    struct radix * start;
+    int count;
     
+}head;
+
+typedef struct radix{
+    
+    struct radix * next;
     int data;
-    int distance;
-    int repeat;
-    struct graphnode * vertexpointer;
-    struct graphnode * edgepointer;
-    
-}graphnode;
 
-typedef struct Stack{
-    
-    graphnode * listnode [MAX];
-    int listdistance [MAX];
-    int top;
+}radix;
 
-}Stack;
-
-Stack * createstack(){
+head * createlistheader(){
     
-    int i;
-    Stack * nodepath;
-    nodepath = (Stack*)malloc(sizeof(Stack));
-    nodepath->top = 0;
-
-    for(i=0;i< MAX; i++){
-        nodepath->listnode[i] = NULL;
-    }
-    
-    for(i=0;i< MAX; i++){
-        nodepath->listdistance[i] = 0;
-    }
-    
-    return nodepath;
+    head * nodepointer;
+    nodepointer = (head*)malloc(sizeof(head));
+    nodepointer->start = NULL; 
+    nodepointer->count = 0;
+    return nodepointer;
     
 }
 
-void push(Stack * nodepath, graphnode * node){
+radix * createnode(int value){
     
-   int prevdistance;
-   nodepath->top = nodepath->top + 1;
-   nodepath->listnode[nodepath->top] =   node;
-   prevdistance = nodepath->listdistance[nodepath->top - 1];
-   nodepath->listdistance[nodepath->top] = node->distance + prevdistance;
-  
-}
-
-int pop(Stack * nodepath){
-    
-    graphnode * node;
-    node = nodepath->listnode[nodepath->top];
-    nodepath->listnode[nodepath->top] = NULL;
-    nodepath->top = nodepath->top - 1;
-    nodepath->top = nodepath->top - 1;
-    return nodepath->top;
+    radix * node;
+    node = (radix*) malloc (sizeof(radix));
+    node->next = NULL;
+    node->data = value;
+    return node;
     
 }
 
-graphnode * topnode(Stack * nodepath){
-    
-    graphnode * node;
-    node = nodepath->listnode[nodepath->top];
-    return node ;
-    
-}
-
-int topdistance(Stack * nodepath){
-    
-    int data;
-    data = nodepath->listdistance[nodepath->top];
-    return data;
-    
-}
-
-Graph * creategraph(){
-    
-    Graph * graph;
-    graph = (Graph*)malloc(sizeof(Graph));
-    graph->head = NULL;
-    return graph;
-    
-}
-
-graphnode * isEmpty(graphnode * vertex1, graphnode * vertex){
-   
-    if(vertex1 == NULL){
+void insert(radix * node, head * nodepointer, int element){
         
-        return vertex;
-    }
-    return vertex1;
-}
-
-
-graphnode * findposition(graphnode * vertex, int number){
+    radix * temp;
+    temp = nodepointer->start;
     
-    while(vertex->data != number){
+    if(nodepointer->start == NULL){
         
-        vertex = vertex->vertexpointer;
-    }
-    return vertex;
-}
-
-void insert(graphnode * vertex1, graphnode * vertex){
-    
-    if(vertex1->data == vertex->data){
-        
+        nodepointer->start = node;
         return;
     }
-    
-    while(vertex1->vertexpointer != NULL){
+
+    while(temp->next != NULL){
         
-        if(vertex1-> data == vertex-> data){
-            return;
-        }
-        
-        else{
-            vertex1 = vertex1->vertexpointer;
-        }
+        temp = temp->next;
     }
     
-    vertex1->vertexpointer = vertex;
+    temp->next = node;
+    return;
 }
 
-graphnode * createvertex(int number){
+void display(radix * node){
     
-    graphnode * vertex;
-    vertex = (graphnode*)malloc(sizeof(graphnode));
-    vertex->data = number;
-    vertex->distance = 0;
-    vertex->vertexpointer = NULL;
-    vertex->edgepointer = NULL;
-    return vertex;
-
-}
-
-void createedge(graphnode * vertex, int number1, int number2, int distance){
-    
-    graphnode * vertex1, * vertex2, * vertex3, * tempvertex;
-    
-    vertex1 = findposition(vertex, number1);
-    vertex2 = findposition(vertex, number2);
-    vertex3 = createvertex(number2);
-    vertex3-> distance = distance;
-
-    while(vertex1 != NULL){
+    while(node != NULL){
         
-        if(vertex1->data == vertex2->data){
-            
-            if (vertex1->distance < distance){
-                continue;
-            }
-                
-            else{
-                vertex1->distance = distance;
-            }
-            
-            return;
-        }
-        
-        else{
-            
-            tempvertex = vertex1;    
-            vertex1 = vertex1->edgepointer;
-        }
+        printf("%d\n", node->data);
+        node = node->next;
     }
-    
-    tempvertex->edgepointer = vertex3;
-    vertex3->vertexpointer = vertex2;
-     
-}
-
-void VertexSearch(graphnode * vertex){
-    
-    while(vertex->vertexpointer != NULL){
-        
-        printf("%d\n", vertex->data);
-        vertex = vertex->vertexpointer;
-    }
-    printf("%d\n", vertex->data);
-}
-
-void EdgeSearch(graphnode * vertex){
-    
-    graphnode * temp;
-    temp = vertex;
-    vertex = vertex->edgepointer;
-    
-    if(vertex == NULL){
-        
-        return;
-    }
-    
-    while(vertex->edgepointer != NULL){
-        
-        printf("%d-", temp->data); 
-        printf("%d\n", vertex->data);
-        vertex = vertex->edgepointer;
-    }
-    printf("%d-", temp->data);
-    printf("%d\n", vertex->data);
-    EdgeSearch(temp->vertexpointer);
-    
-}
-
-void displaypath(graphnode * source){
-    
-    graphnode * destination;
-    
-    while(source != NULL){
-        
-        destination = source->edgepointer;
-        
-        while(destination != NULL){
-            
-            printf("%d-", source->data);
-            printf("%d\n", destination->data);
-            printf("%d\n", destination->distance);
-            destination = destination->edgepointer;
-        }
-        
-        source = source->vertexpointer;
-    }
-}
-
-void check(graphnode * vertex, int number1, int number2, int distance1){
-
-    graphnode * vertex1, * tempvertex;
-    
-    while(vertex->data != number1){
-        
-        vertex = vertex->vertexpointer;
-    }   
-    
-    while(vertex != NULL){
-        
-        if(vertex->data != number2){
-            tempvertex = vertex;
-            vertex = vertex->edgepointer;
-        }
-        
-        else{
-
-            if(vertex->distance > distance1)
-                vertex->distance = distance1;
-                return;
-        }
-    }
-    
-    if(vertex == NULL){
-        
-        vertex1 = createvertex(number2);
-        vertex1->distance = distance1;
-        tempvertex->edgepointer = vertex1;
-    }
-}
-
-
-void SmallestPath(Stack * nodepath, Graph * graph, graphnode * node){
-    
-    graphnode * source, * destination, * temp, * vertex;
-    int distance, top;
-    
-    source = node;
-
-    while(top > -1){
-        
-        destination = source->edgepointer;
-        
-        while(destination != NULL){
-            
-            destination->repeat = 1;
-            push(nodepath, destination);
-                        
-            distance = topdistance(nodepath);
-            check(graph->head, node->data, destination->data, distance);
-
-            temp = destination->vertexpointer;
-            destination = temp->edgepointer;
-        }
-    
-        source = topnode(nodepath);
-        source->repeat = 0;
-        top = pop(nodepath);
-    }
-       
-    printf("%d\n", source->data);
-    displaypath(graph->head); 
-    
 }
 
 int main(){
+ 
+    radix * node;
+    head * nodepointer;
+    int i, j, k = 1, temp, element, n;
     
-    Graph * graph;
-    Stack * nodepath;
-    graphnode * vertex;
-    graph = creategraph();
-    nodepath = createstack();
-    
-    vertex = createvertex(1);
-    graph->head = isEmpty(graph->head, vertex);
-    insert(graph->head, vertex);
-    push(nodepath, vertex);
-    vertex = createvertex(2);
-    insert(graph->head, vertex);
-    push(nodepath, vertex);
-    vertex = createvertex(3);
-    push(nodepath, vertex);
-    insert(graph->head, vertex);
-    vertex = createvertex(4);
-    push(nodepath, vertex);
-    insert(graph->head, vertex);
-    vertex = createvertex(5);
-    push(nodepath, vertex);
-    insert(graph->head, vertex);
-    vertex = createvertex(6);
-    push(nodepath, vertex);
-    insert(graph->head, vertex);
-    vertex = createvertex(7);
-    push(nodepath, vertex);
-    insert(graph->head, vertex);
-    VertexSearch(graph->head);
+    nodepointer = createlistheader();
+    printf("Enter number of elements\n");
 
-    createedge(graph->head, 1, 2, 3);
-    createedge(graph->head, 1, 3, 8);
-    createedge(graph->head, 2, 3, 3);
-    createedge(graph->head, 1, 4, 2);
-    createedge(graph->head, 4, 5, 1);
-    createedge(graph->head, 1, 5, 4);
-    createedge(graph->head, 3, 6, 4);
-    createedge(graph->head, 1, 6, 3);
-    createedge(graph->head, 5, 6, 5);
-    createedge(graph->head, 6, 7, 3);
-    EdgeSearch(graph->head);
+    node = createnode(103);
+    insert(node, nodepointer, 103);
+    node  = createnode(108);
+    insert(node, nodepointer, 108);
+    node  = createnode(124);
+    insert(node, nodepointer, 124);
+    node = createnode(117);
+    insert(node, nodepointer, 117);
+    node = createnode(105);
+    insert(node, nodepointer, 105);
 
-    SmallestPath(nodepath, graph, graph->head);
     
-    return 0;
-   
+    display(nodepointer->start);
 }
