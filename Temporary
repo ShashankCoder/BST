@@ -35,16 +35,17 @@ radix * createnode(int value){
     
 }
 
-void insert(radix * node, head * nodepointer, int element){
-        
-    radix * temp;
-    temp = nodepointer->start;
+radix * isEmpy(radix * node, radix * temp){
     
-    if(nodepointer->start == NULL){
+    if(temp == NULL){
         
-        nodepointer->start = node;
-        return;
+        return node;
     }
+    
+    return temp;
+}
+
+void insert(radix * node, radix * temp, int element){
 
     while(temp->next != NULL){
         
@@ -64,6 +65,30 @@ void display(radix * node){
     }
 }
 
+void radixsort(radix * node){
+    
+    radix * temp;
+    temp = node;
+    
+    while(k >! 1000){
+        
+        while(node != NULL){
+            
+            number = node->data;
+            number = number % k;
+            
+            sol = createnode(number);
+            nodepointer->solution = isEmpty(node, nodepointer->solution);
+            insert(sol, nodepointer->solution, number);
+            
+            node = node -> next;
+            
+            
+            
+        }
+    }
+}
+
 int main(){
  
     radix * node;
@@ -74,16 +99,18 @@ int main(){
     printf("Enter number of elements\n");
 
     node = createnode(103);
-    insert(node, nodepointer, 103);
+    nodepointer->head = isEmpty(node, nodepointer->head);
+    insert(node, nodepointer->start, 103);
     node  = createnode(108);
-    insert(node, nodepointer, 108);
+    insert(node, nodepointer->start, 108);
     node  = createnode(124);
-    insert(node, nodepointer, 124);
+    insert(node, nodepointer->start, 124);
     node = createnode(117);
-    insert(node, nodepointer, 117);
+    insert(node, nodepointer->start, 117);
     node = createnode(105);
-    insert(node, nodepointer, 105);
+    insert(node, nodepointer->sart, 105);
 
     
     display(nodepointer->start);
+    radixsort(nodepointer->start);
 }
