@@ -4,6 +4,7 @@
 typedef struct head{
     
     struct radix * start;
+    struct radix * solution;
     int count;
     
 }head;
@@ -20,6 +21,7 @@ head * createlistheader(){
     head * nodepointer;
     nodepointer = (head*)malloc(sizeof(head));
     nodepointer->start = NULL; 
+    nodepointer->solution = NULL;
     nodepointer->count = 0;
     return nodepointer;
     
@@ -68,22 +70,26 @@ radix * isEmpty(radix * node, radix * temp){
 
 void radixsort(radix * node, head * nodepointer){
     
-    radix * temp,* start, * sol;
+    radix * temp, * start, * sol;
     start = node;
     temp = node;
-    int k = 1, number;
+    int k = 10, number, c = 1;
     
     while(k <= 1000){
             
-        while(node != NULL){
+        while(start != NULL){
             
-            number = node->data;
+            number = start->data;
             number = number % k;
-            node = node->next;
+            printf("%d\n", number);
+            
+            
+            start = start->next;
+            c = c + 1;
         }
-        printf("%d\n", k);
-        k = k * 10;
-        
+    
+    start = node;
+    k = k * 10;
     }
 }   
 
