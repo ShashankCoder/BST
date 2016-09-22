@@ -21,6 +21,7 @@ head * createlistheader(){
     head * nodepointer;
     nodepointer = (head*)malloc(sizeof(head));
     nodepointer->start = NULL; 
+    nodepointer->solution = NULL;
     nodepointer->count = 0;
     return nodepointer;
     
@@ -34,16 +35,6 @@ radix * createnode(int value){
     node->data = value;
     return node;
     
-}
-
-radix * isEmpty(radix * node, radix * temp){
-    
-    if(temp == NULL){
-        
-        return node;
-    }
-    
-    return temp;
 }
 
 void insert(radix * node, radix * temp, int element){
@@ -66,42 +57,83 @@ void display(radix * node){
     }
 }
 
+void check(head * nodepath, radix * temp, radix * node, int number){
+    
+    radix * prev, * start;
+    int totalnumber;
+    start = temp;
+    
+    while(temp->data < number && totalnumber< nodepath->count){
+    
+        prev = temp;
+        temp = temp->next;
+        totalnumber = totalnumber + 1;
+        
+        if(temp == NULL){
+            break;
+        }
+        
+    }
+    
+    while(start != prev){
+        
+        start->data = start->next->data;
+        start = start->next;
+    }
+    
+    prev->next = node;
+    node->next = temp;
+    return;
+    
+}
+
+radix * isEmpty(radix * node, radix * temp){
+    
+    if(temp == NULL){
+        
+        return node;
+    }
+    
+    return temp;
+}
+
+
 void radixsort(radix * node, head * nodepointer){
     
-    radix * temp,* start, * sol;
+    radix * temp, * start, * sol;
     start = node;
-    temp = node;
-    int k, number;
+    int k = 10, number;
     
     while(k <= 1000){
-        
-        while(node != NULL){
             
-            number = node->data;
+        while(start != NULL){
+            
+            number = start->data;
             number = number % k;
-            
             sol = createnode(number);
-            nodepointer->solution = isEmpty(node, nodepointer->solution);
-            insert(sol, nodepointer->solution, number);
             
-            while ((start->data < number) && (start->next != NULL)){
-                
-                start = start->next;
+            nodepointer->count = nodepointer->count + 1;
+            
+            if(nodepointer->count == 1){
+                nodepointer->solution = isEmpty(sol, nodepointer->solution);
             }
             
-            while(temp != start){
+            else{
                 
-                temp->data = temp->next->data;
-                temp = temp->next;
-            }
-            
-            temp->data = number;
-            node = node -> next;
+                check(nodepointer, nodepointer->solution, sol, number);
         
+            }
+           
+            start = start->next;
         }
-            k = k * 10;
+        
+    start = node;
+    k = k * 10;
+    
     }
-}
+    
+    display(nodepointer->solution);
+}   
 
 int main(){
  
@@ -114,17 +146,18 @@ int main(){
 
     node = createnode(103);
     nodepointer->start = isEmpty(node, nodepointer->start);
-    insert(node, nodepointer->start, 103);
+    
     node  = createnode(108);
-    insert(node, nodepointer->start, 108);
+    nodepointer->start = isEmpty(node, nodepointer->start);
     node  = createnode(124);
     insert(node, nodepointer->start, 124);
     node = createnode(117);
     insert(node, nodepointer->start, 117);
     node = createnode(105);
     insert(node, nodepointer->start, 105);
+    node = createnode(108);
+    insert(node, nodepointer->start, 108);
 
-    
     display(nodepointer->start);
     radixsort(nodepointer->start, nodepointer);
-}             
+}
