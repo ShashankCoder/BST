@@ -59,8 +59,9 @@ void display(radix * node){
 
 void check(head * nodepath, radix * node, radix * sol, int total){
     
-    radix * prev, * start;
+    radix * prev, * start, * temp;
     start = node;
+    temp = node;
 
     while((start != NULL) && (start->data < sol->data)){
     
@@ -68,11 +69,18 @@ void check(head * nodepath, radix * node, radix * sol, int total){
         start = start->next;
         
     }
-    
-    if ((prev == start) && (total < nodepath->count)){
+
+     if ((prev == start) && (total < nodepath->count)){
     
         nodepath->solution = sol;
         sol->next = start;
+    }
+    
+    else if((prev == start) && (total > nodepath->count)){
+        
+        sol->next = nodepath->solution->next;
+        nodepath->solution = sol;
+        
     }
     
     else if(total < nodepath->count){
@@ -83,8 +91,17 @@ void check(head * nodepath, radix * node, radix * sol, int total){
     
     else{
         
-        printf("1");
+        printf("%d\n", temp->data);
+        
+        while(temp->next != prev){
+            
+            temp->data = temp->next->data;
+            temp = temp->next;
+        }
+        temp->data = prev->data;
+        temp->next = sol;
     }
+    
     
     return;
     
@@ -107,7 +124,7 @@ void radixsort(head * nodepath, radix * node, head * nodepointer){
     start = node;
     int k = 10, number, c = 0;
     
-    while(k <= 10){
+    while(k <= 100){
             
         while(start != NULL){
             
@@ -133,10 +150,9 @@ void radixsort(head * nodepath, radix * node, head * nodepointer){
         
     start = node;
     k = k * 10;
-    
+    display(nodepath->solution);
     }
     
-    display(nodepointer->solution);
 
 }   
 
