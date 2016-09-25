@@ -37,7 +37,7 @@ radix * createnode(int value){
     
 }
 
-void insert(radix * node, radix * temp, int element){
+void insert(head * nodepath, radix * node, radix * temp, int element){
 
     while(temp->next != NULL){
         
@@ -45,6 +45,7 @@ void insert(radix * node, radix * temp, int element){
     }
     
     temp->next = node;
+    nodepath->count = nodepath->count + 1;
     return;
 }
 
@@ -115,7 +116,7 @@ radix * isEmpty(radix * node, radix * temp){
 }
 
 
-void radixsort(head * nodepath, radix * node, head * nodepointer){
+void radixsort(head * nodepath, radix * node){
     
     radix * temp, * start, * sol;
     start = node;
@@ -130,7 +131,7 @@ void radixsort(head * nodepath, radix * node, head * nodepointer){
             sol = createnode(number);
             
             if(c == 0){
-                nodepointer->solution = isEmpty(sol, nodepointer->solution);
+                nodepath->solution = isEmpty(sol, nodepath->solution);
                 
             }
             
@@ -140,7 +141,7 @@ void radixsort(head * nodepath, radix * node, head * nodepointer){
                 
             }
            
-           c = c + 1;
+            c = c + 1;
             start = start->next;
         }
         
@@ -149,40 +150,35 @@ void radixsort(head * nodepath, radix * node, head * nodepointer){
     k = k * 10;
     
     }
-    
-    display(nodepath->solution);
-    
+
 }   
 
 int main(){
  
     radix * node;
-    head * nodepointer;
+    head * nodepath;
     int i, j, k = 1, temp, element, n;
     
-    nodepointer = createlistheader();
+    nodepath = createlistheader();
     printf("Enter number of elements\n");
 
     node = createnode(103);
-    nodepointer->start = isEmpty(node, nodepointer->start);
-    nodepointer->count = nodepointer->count + 1;
+    nodepath->start = isEmpty(node, nodepath->start);
+    nodepath->count = nodepath->count + 1;
     
     node  = createnode(108);
-    insert(node, nodepointer->start, 108);
-    nodepointer->count = nodepointer->count + 1;
-    
-    node  = createnode(124);
-    insert(node, nodepointer->start, 124);
-    nodepointer->count = nodepointer->count + 1;
-    
-    node = createnode(117);
-    insert(node, nodepointer->start, 117);
-    nodepointer->count = nodepointer->count + 1;
-    
-    node = createnode(105);
-    insert(node, nodepointer->start, 105);
-    nodepointer->count = nodepointer->count + 1;
+    insert(nodepath, node, nodepath->start, 108);
 
-    display(nodepointer->start);
-    radixsort(nodepointer, nodepointer->start, nodepointer);
+    node  = createnode(124);
+    insert(nodepath, node, nodepath->start, 124);
+
+    node = createnode(117);
+    insert(nodepath, node, nodepath->start, 117);
+
+    node = createnode(105);
+    insert(nodepath, node, nodepath->start, 105);
+
+    radixsort(nodepath, nodepath->start);
+    display(nodepath->solution);
+    
 }
