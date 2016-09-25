@@ -61,7 +61,6 @@ void display(radix * node){
 void check(head * nodepath, radix * node, radix * sol, int total){
     
     radix * prev, * start, * temp;
-    int ne;
     start = temp = prev = node;
     
 
