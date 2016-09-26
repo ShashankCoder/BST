@@ -1,0 +1,97 @@
+#include <stdio.h>
+
+void initialize(int input[], int n){
+    
+    int i;
+    
+    for(i = 0; i < n; i++){
+        
+        scanf("%d\n", &input[i]);
+    }
+    
+}
+
+void calculate(int count[], int input[], int n, int k){
+    
+    int i, j, temp;
+    
+    for(i = 0; i < n; i++){
+        
+        temp = input[i];
+        j = 0;
+        while(j <= k){
+            
+            if(j == temp){
+                count[j] = count[j] + 1;
+                break;
+            }
+            else{
+                j = j + 1;
+            }
+        }
+    }
+    
+    for(i = 1; i <= k; i++){
+        
+        count[i] = count[i] + count[i-1];
+
+    }
+    
+}
+
+void countingsort(int count[], int output[], int k){
+    
+    while(k >= 0){
+        
+        if(count[k-1] == count[k]){
+            
+            k = k - 1;
+        }
+        
+        else{
+            
+            output[count[k] - 1] = k;
+            k = k - 1;
+        }
+    }
+    
+}
+
+void display(int output[], int n){
+    
+    int i;
+    
+    for(i = 0; i < n ; i++){
+        
+        printf("%d\n", output[i]);
+    }
+}
+
+
+int main() {
+
+    int input[20], output[20], count[20];
+    int i, j = 0, k, n, temp;
+    
+    printf("Enter number of elements\n");
+    scanf("%d\n", &n);
+    
+    printf("Enter maximum integer\n");
+    scanf("%d\n", &k);
+    
+    printf("Enter Input array\n");
+    initialize(input, n);
+
+    for(i = 0; i <= k; i++){
+        
+        count[i] = 0;
+    }
+    
+    calculate(count, input, n, k);
+    
+    
+    countingsort(count, output, k);
+    display(output, n);
+    
+    return 0;
+}
