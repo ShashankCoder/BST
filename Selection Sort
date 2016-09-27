@@ -1,0 +1,72 @@
+#include <stdio.h>
+
+void initialize(int input[], int n){
+    
+    int i;
+    
+    for(i = 0; i < n; i++){
+        
+        scanf("%d\n", &input[i]);
+    }
+    
+}
+
+void selectionsort(int temp[], int n){
+    
+    int i, j, minpos, min;
+    
+    for(i = 0; i < n-1; i++){
+        
+        min = temp[i];
+        minpos = i;
+        j = i + 1;
+        
+        while(j < n){
+            
+            if(temp[j] < min){
+                
+                min = temp[j];
+                minpos = j;
+                j = j + 1;
+            }
+            
+            else{
+                
+                j = j + 1;
+            }
+        }
+        
+        temp[minpos] = temp[i];
+        temp[i] = min;
+    }
+    
+}
+
+void display(int output[], int n){
+    
+    int i;
+    
+    for(i = 0; i < n; i++){
+        
+        printf("%d\n", output[i]);
+    }
+    
+}
+
+int main() {
+
+    int input[20];
+    int i, j, n, min, minpos;
+    
+    printf("Enter number of integers\n");
+    scanf("%d\n", &n);
+    
+    printf("Enter input array\n");
+    initialize(input, n);
+    
+    selectionsort(input, n);
+    
+    display(input, n);
+    
+	return 0;
+}
