@@ -1,0 +1,63 @@
+#include<stdio.h>
+
+void initialize(int input[], int n){
+    
+   int i;
+   
+   for(i = 0; i < n; i++){
+       
+       scanf("%d\n", &input[i]);
+   }
+   
+}
+
+void insertionsort(int temp[], int n){
+    
+    int i, j, val;
+    
+    for(i = 1; i < n; i++){
+        
+        for(j = i; j >= 1; j--){
+            
+            if(temp[j] < temp[j-1]){
+                
+                val = temp[j];
+                temp[j] = temp[j-1];
+                temp[j-1] = val;
+            }
+            
+            else{
+                
+                break;
+            }
+        }
+    }
+    
+}
+
+void display(int output[], int n){
+    
+    int i;
+    
+    for(i = 0; i < n; i++){
+        
+        printf("%d\n", output[i]);
+    }
+}
+
+int main(){
+    
+    int i, j, n, temp;
+    int input[20];
+    
+    printf("Enter number of elements\n");
+    scanf("%d\n", &n);
+    
+    printf("Enter Input array\n");
+    initialize(input, n);
+    insertionsort(input, n);
+    
+    display(input,n);
+    
+    return 0;
+}
