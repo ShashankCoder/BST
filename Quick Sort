@@ -1,0 +1,92 @@
+#include<stdio.h>
+
+void initialize(int input[], int n){
+    
+   int i;
+   
+   for(i = 0; i < n; i++){
+       
+       scanf("%d\n", &input[i]);
+   }
+   
+}
+
+int partition(int input[], int lb, int ub){
+    
+    int mid = lb, temp = 0, temppos = 0, pivot;
+    
+    pivot = input[ub];
+    
+    while(mid <= ub){
+        
+        while(input[mid] > pivot){
+            
+            mid = mid + 1;
+        }
+        
+        temp = input[mid];
+        temppos = mid;
+        
+        while(temppos > lb){
+            
+            input[temppos] = input[temppos - 1];
+            temppos =  temppos - 1;
+        }
+        
+        input[lb] =  temp;
+        lb = lb + 1;
+        mid = mid + 1;
+    }
+    
+    if(lb == ub + 1){
+        
+        return ub - 1;
+    }
+    
+    else{
+        
+        return lb - 1;
+    }
+}
+
+void quicksort(int input[], int lb, int ub){
+    
+    int k = 0;
+    
+    if(lb == ub){
+        
+        return;
+    }
+    
+    k = partition(input, lb, ub);
+    quicksort(input, lb, k);
+    quicksort(input, k+1, ub);
+    
+}
+
+void display(int output[], int n){
+    
+    int i;
+    
+    for(i = 0; i < n; i++){
+        
+        printf("%d\n", output[i]);
+    }
+}
+
+int main(){
+    
+    int input[20];
+    int lb = 0, ub, i;
+    
+    printf("Enter the number of elements\n");
+    scanf("%d\n", &ub);
+    
+    printf("Enter input array\n");
+    initialize(input, ub);
+    
+    quicksort(input, lb, ub-1);
+   
+    display(input, ub);
+
+}
