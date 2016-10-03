@@ -1,0 +1,126 @@
+# include<stdio.h>
+
+void initialize(int input[], int n){
+    
+    int i;
+    for(i = 0; i < n; i++){
+        
+        scanf("%d\n",&input[i]);
+    }
+}
+
+void clear(int output[], int n){
+    
+    int i;
+    for(i = 0; i < n; i++){
+        
+        output[i] = 0;
+    }
+}
+
+void display(int input[], int n){
+    
+    int i;
+    for(i = 0; i < n; i++){
+        
+        printf("%d\n", input[i]);
+    }
+}
+
+void merge(int input[], int lb, int mid, int ub){
+    
+    int output[20];
+    int i, j, k, count;
+    i = k = lb;
+    j = mid + 1;
+    
+    clear(output, ub);
+    
+    while((i <= mid) && (j <= ub)){
+        
+        if(input[i] > input[j]){
+            
+            output[k] = input[j];
+            k = k + 1;
+            j = j + 1;
+        }
+        
+        else{
+            
+            output[k] = input[i];
+            k = k + 1;
+            i = i + 1;
+        }
+        
+    }
+    
+    if(i <= mid){
+        
+        while(i != mid+1){
+            
+            output[k] = input[i];
+            k = k + 1;
+            i = i + 1;
+        }
+    }
+    
+    if(j <= ub){
+        
+        while(j != ub+1){
+            
+            output[k] = input[j];
+            k = k + 1;
+            j = j + 1;
+        }
+    }
+    
+    for(count = lb; count <= ub; count++){
+        
+        input[count] = output[count];
+    }
+    
+}
+
+void mergesort(int input[], int lb, int ub){
+    
+    int mid, temp;
+    mid = (lb + ub)/2;
+    
+    if(lb < ub-1){
+        
+        mergesort(input, lb, mid);
+        mergesort(input, mid+1, ub);
+        merge(input, lb, mid, ub);
+    }
+    
+    else if(input[lb] > input[ub]){
+        
+        temp = input[lb];
+        input[lb] = input[ub];
+        input[ub] = temp;
+    }
+    
+    else{
+        
+        return;
+    }
+
+return;
+}
+
+int main(){
+    
+    static int input[20];
+    int i, lb = 0, ub;
+    
+    printf("Enter number of elements\n");
+    scanf("%d\n", & ub);
+    
+    printf("Enter the Input array\n");
+    initialize(input, ub);
+    
+    mergesort(input, lb, ub-1);
+    display(input, ub);
+    
+    return 0;
+}
